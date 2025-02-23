@@ -49,14 +49,10 @@ document.addEventListener("click", (event) => {
 // Function to fetch and parse CSV data
 async function fetchCSVData() {
     try {
-        const response = await fetch('./locations.json?v=' + new Date().getTime()); // Cache-busting
-        if (!response.ok) throw new Error('Failed to fetch CSV file');
-        const data = await response.text();
-        console.log('Fetched CSV Data:', data); // Debug: Log fetched data
-        return data;
-    } catch (error) {
-        console.error('Error fetching CSV:', error);
-        return '';
+        const response = await fetch('./locations.json?v=' + new Date().getTime()) // Force fresh fetch
+      .then(response => response.json())
+  .then(data => console.log("Fetched Data:", data)) // Debugging
+  .catch(error => console.error("Error fetching JSON:", error));
     }
 }
 
