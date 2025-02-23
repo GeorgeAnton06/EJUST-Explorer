@@ -72,9 +72,9 @@ function displayResults(results, resultsContainer) {
     results.forEach(result => {
         const resultDiv = document.createElement('div');
         resultDiv.innerHTML = `
-            <h3>${result.Prof}</h3>
-            <p><strong>Location:</strong> ${result.Location}</p>
-            <p><strong>Description:</strong> ${result.discreption}</p>
+            <h3>${result.Prof || "Unknown"}</h3>
+            <p><strong>Location:</strong> ${result.Location || "Unknown"}</p>
+            <p><strong>Description:</strong> ${result.discreption || "No description available"}</p>
         `;
         resultsContainer.appendChild(resultDiv);
     });
@@ -95,8 +95,10 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
         const query = searchInput.value.trim().toLowerCase();
         console.log(`🔍 Searching for: "${query}"`); // Debugging
 
-        // Filter results and check if `Prof` exists before calling `toLowerCase()`
-        const filteredResults = data.filter(item => item.Prof && item.Prof.toLowerCase().includes(query));
+        // Filter results safely
+        const filteredResults = data.filter(item => 
+            item.Prof && item.Prof.toLowerCase().includes(query)
+        );
         console.log(`📌 Found ${filteredResults.length} results`); // Debugging
 
         displayResults(filteredResults, resultsContainer);
@@ -128,4 +130,3 @@ async function initializeSearch() {
 
 // Call the initialize function when the page loads
 window.addEventListener('DOMContentLoaded', initializeSearch);
-
