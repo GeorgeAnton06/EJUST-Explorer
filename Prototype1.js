@@ -49,7 +49,7 @@ document.addEventListener("click", (event) => {
 // Function to fetch and parse CSV data
 async function fetchCSVData() {
     try {
-        const response = await fetch('./locations.json?v=' + new Date().getTime()); // Cache-busting
+        const response = await fetch('locations.json?v=' + new Date().getTime()); // Cache-busting
         if (!response.ok) throw new Error('Failed to fetch CSV file');
         const data = await response.text();
         console.log('Fetched CSV Data:', data); // Debug: Log fetched data
