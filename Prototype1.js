@@ -6,12 +6,12 @@ const secondaryCampusContent = document.getElementById("secondary-campus-content
 
 // Function to show campus content
 function showCampusContent(showContent, hideContent) {
-    hideContent.classList.remove("show"); // Start fade-out
+    hideContent.classList.remove("show");
     setTimeout(() => {
-        hideContent.classList.add("hidden"); // Hide previous content
-        showContent.classList.remove("hidden"); // Show new content
+        hideContent.classList.add("hidden");
+        showContent.classList.remove("hidden");
         setTimeout(() => {
-            showContent.classList.add("show"); // Trigger fade-in effect
+            showContent.classList.add("show");
         }, 10);
     }, 500);
 }
@@ -30,15 +30,15 @@ function hideCampusContent() {
 // Event listeners for buttons
 mainCampusBtn.addEventListener("click", (event) => {
     showCampusContent(mainCampusContent, secondaryCampusContent);
-    event.stopPropagation(); // Prevent triggering the document click event
+    event.stopPropagation();
 });
 
 secondaryCampusBtn.addEventListener("click", (event) => {
     showCampusContent(secondaryCampusContent, mainCampusContent);
-    event.stopPropagation(); // Prevent triggering the document click event
+    event.stopPropagation();
 });
 
-// Hide content when clicking anywhere outside
+// Hide content when clicking outside
 document.addEventListener("click", (event) => {
     if (!mainCampusContent.contains(event.target) && !secondaryCampusContent.contains(event.target) &&
         event.target !== mainCampusBtn && event.target !== secondaryCampusBtn) {
@@ -46,39 +46,18 @@ document.addEventListener("click", (event) => {
     }
 });
 
-// Function to fetch and parse CSV data
-async function fetchCSVData() {
+// Function to fetch and load JSON data
+async function fetchJSONData() {
     try {
-        const response = await fetch('./doctor_locations.json')
-  .then(response => response.json())
-  .then(data => {
-    console.log("Successfully fetched data:", data);
-    // Call the function that initializes buttons if needed
-    initializeButtons();  // <- Ensure button logic is run AFTER data loads
-  })
-  .catch(error => console.error("Error fetching JSON:", error));
+        const response = await fetch('./data/doctor_locations.json?v=' + new Date().getTime());
+        if (!response.ok) throw new Error('Failed to fetch JSON file');
+        const data = await response.json();
+        console.log('Fetched JSON Data:', data); // Debugging
+        return data;
+    } catch (error) {
+        console.error('Error fetching JSON:', error);
+        return [];
     }
-    function initializeButtons() {
-  document.querySelectorAll(".your-button-class").forEach(button => {
-    button.addEventListener("click", function() {
-      console.log("🔥 Button clicked:", this.textContent);
-    });
-  });
-}
-
-// Function to parse CSV data into an array of objects
-function parseCSV(csvText) {
-    // Remove BOM character if present
-    if (csvText.charCodeAt(0) === 0xFEFF) {
-        csvText = csvText.slice(1);
-    }
-
-    const rows = csvText.split('\n').slice(1); // Remove header row
-    console.log('Parsed Rows:', rows); // Debug: Log parsed rows
-    return rows.map(row => {
-        const [prof, location, description] = row.split(',').map(item => item.trim()); // Trim extra spaces
-        return { prof, location, description };
-    });
 }
 
 // Function to display search results
@@ -99,7 +78,7 @@ function displayResults(results, resultsContainer) {
     });
 }
 
-// Function to handle search
+// Function to set up search functionality
 function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
     const searchInput = document.getElementById(searchInputId);
     const searchButton = document.getElementById(searchButtonId);
@@ -111,26 +90,24 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
         displayResults(filteredResults, resultsContainer);
     });
 
-    // Optional: Allow pressing "Enter" to search
     searchInput.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
-            searchButton.click(); // Trigger the search button click
+            searchButton.click();
         }
     });
 }
 
 // Main function to initialize everything
 async function initializeSearch() {
-    const csvData = await fetchCSVData('D:\Key Skills project\Doctor locations.csv?v='); // Fetch CSV data
-    const parsedData = parseCSV(csvData); // Parse CSV data
-    console.log('Parsed Data:', parsedData); // Debug: Log parsed data
+    const jsonData = await fetchJSONData(); // Fetch JSON data
 
     // Set up search for Main Campus
-    setupSearch('main-search', 'main-search-btn', 'main-results', parsedData);
+    setupSearch('main-search', 'main-search-btn', 'main-results', jsonData);
 
     // Set up search for Secondary Campus
-    setupSearch('secondary-search', 'secondary-search-btn', 'secondary-results', parsedData);
+    setupSearch('secondary-search', 'secondary-search-btn', 'secondary-results', jsonData);
 }
 
 // Call the initialize function when the page loads
 window.addEventListener('load', initializeSearch);
+
