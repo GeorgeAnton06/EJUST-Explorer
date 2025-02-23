@@ -49,11 +49,10 @@ document.addEventListener("click", (event) => {
 // Function to fetch and parse CSV data
 async function fetchCSVData() {
     try {
-        const response = await fetch('./locations.json?v=' + new Date().getTime()) // Force fresh fetch
-      .then(response => response.json())
-  .then(data => console.log("Fetched Data:", data)) // Debugging
+        const response = await fetch('./doctor_locations.json')
+  .then(response => response.json())
+  .then(data => console.log("Fetched Data:", data))
   .catch(error => console.error("Error fetching JSON:", error));
-    }
 }
 
 // Function to parse CSV data into an array of objects
