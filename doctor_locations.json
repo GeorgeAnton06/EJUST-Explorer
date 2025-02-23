@@ -1,8 +1,37 @@
-Prof,Location,discreption
-Haitham,B8 F1 06,logic professor
-Ahmed,B7 F2 23,Math professor
-Mohammed,B10 F2 14,Manufacturing professor
-Wegdan,B8 F2 14,Physics Professor
-Hirano,COE F1 03,Japanese Tutor
-Aro,B18 F1 20,Japanese Tutor
-Ibrahim,B10 F2 24,Engineering Drawing professor
+[
+    {
+        "Prof": "Haitham",
+        "Location": "B8 F1 06",
+        "discreption": "logic professor"
+    },
+    {
+        "Prof": "Ahmed",
+        "Location": "B7 F2 23",
+        "discreption": "Math professor"
+    },
+    {
+        "Prof": "Mohammed",
+        "Location": "B10 F2 14",
+        "discreption": "Manufacturing professor"
+    },
+    {
+        "Prof": "Wegdan",
+        "Location": "B8 F2 14",
+        "discreption": "Physics Professor"
+    },
+    {
+        "Prof": "Hirano",
+        "Location": "COE F1 03",
+        "discreption": "Japanese Tutor"
+    },
+    {
+        "Prof": "Aro",
+        "Location": "B18 F1 20",
+        "discreption": "Japanese Tutor"
+    },
+    {
+        "Prof": "Ibrahim",
+        "Location": "B10 F2 24",
+        "discreption": "Engineering Drawing professor"
+    }
+]
