@@ -51,9 +51,13 @@ async function fetchCSVData() {
     try {
         const response = await fetch('./doctor_locations.json')
   .then(response => response.json())
-  .then(data => console.log("Fetched Data:", data))
-  .catch(error => console.error("Error fetching JSON:", error));
-}
+  .then(data => {
+    console.log("✅ Successfully fetched data:", data);
+    // Call the function that initializes buttons if needed
+    initializeButtons();  // <- Ensure button logic is run AFTER data loads
+  })
+  .catch(error => console.error("❌ Error fetching JSON:", error));
+
 
 // Function to parse CSV data into an array of objects
 function parseCSV(csvText) {
