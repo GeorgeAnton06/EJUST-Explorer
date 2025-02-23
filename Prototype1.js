@@ -48,16 +48,16 @@ document.addEventListener("click", (event) => {
     }
 });
 
-// Function to fetch JSON data (Fixed to use JSON instead of CSV)
+// Function to fetch JSON data
 async function fetchJSONData() {
     try {
         const response = await fetch('./data/doctor_locations.json?v=' + new Date().getTime());
         if (!response.ok) throw new Error(`Failed to fetch JSON file: ${response.statusText}`);
         const data = await response.json();
-        console.log('Fetched JSON Data:', data); // Debugging
+        console.log('✅ Fetched JSON Data:', data); // Debugging
         return data;
     } catch (error) {
-        console.error('Error fetching JSON:', error);
+        console.error('❌ Error fetching JSON:', error);
         return [];  // Return empty array to prevent crashes
     }
 }
@@ -87,13 +87,18 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
     const resultsContainer = document.getElementById(resultsContainerId);
 
     if (!searchInput || !searchButton || !resultsContainer) {
-        console.error(`Missing search elements: ${searchInputId}, ${searchButtonId}, ${resultsContainerId}`);
+        console.error(`❌ Missing search elements: ${searchInputId}, ${searchButtonId}, ${resultsContainerId}`);
         return;
     }
 
     searchButton.addEventListener('click', () => {
         const query = searchInput.value.trim().toLowerCase();
-        const filteredResults = data.filter(item => item.Prof.toLowerCase().includes(query));
+        console.log(`🔍 Searching for: "${query}"`); // Debugging
+
+        // Filter results and check if `Prof` exists before calling `toLowerCase()`
+        const filteredResults = data.filter(item => item.Prof && item.Prof.toLowerCase().includes(query));
+        console.log(`📌 Found ${filteredResults.length} results`); // Debugging
+
         displayResults(filteredResults, resultsContainer);
     });
 
@@ -109,8 +114,8 @@ async function initializeSearch() {
     const jsonData = await fetchJSONData(); // Fetch JSON data
 
     // Ensure JSON data is not empty before setting up search
-    if (jsonData.length === 0) {
-        console.error("No data found in JSON file.");
+    if (!Array.isArray(jsonData) || jsonData.length === 0) {
+        console.error("❌ No valid data found in JSON file.");
         return;
     }
 
@@ -123,3 +128,4 @@ async function initializeSearch() {
 
 // Call the initialize function when the page loads
 window.addEventListener('DOMContentLoaded', initializeSearch);
+
