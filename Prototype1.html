@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EJUST Explorer</title>
+    <link rel="stylesheet" href="Prototype1.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+	 <div class="body-wrapper">
+	<h3>こんにちは</h3>
+	<h2>Welcome to EJUST Explorer</h2>
+    <p>Navigate Your Campus with Ease!</p>
+    <div class="campus-selection">
+    <p id="CSel">Please choose your Campus:</p>
+        <!-- Buttons -->
+    <div class="button-container">
+        <button id="main-campus-btn">Main Campus</button>
+        <button id="secondary-campus-btn">Secondary Campus</button>
+    </div>
+</div>
+    <!-- Content Sections (Initially Hidden) -->
+    <div id="main-campus-content" class="campus-content hidden">
+        <h2>Main Campus</h2>
+        <p>Welcome to the Main Campus! Here you will find the administration offices, lecture halls, and libraries.</p>
+    <div class="search-container">
+        <input type="text" id="main-search" placeholder="Search for a professor...">
+        <button id="main-search-btn"><i class="fas fa-search"></i></button> <!-- Search button with icon -->
+    </div>
+    <div id="main-results"></div> <!-- Results will be displayed here -->
+</div>
+</div>
+    </div>
+
+    <div id="secondary-campus-content" class="campus-content hidden">
+        <h2>Secondary Campus</h2>
+        <p>Welcome to the Secondary Campus! This campus hosts specialized research labs and faculty offices.</p>
+    <div class="search-container">
+        <input type="text" id="secondary-search" placeholder="Search for a professor...">
+        <button id="secondary-search-btn"><i class="fas fa-search"></i></button> <!-- Search button with icon -->
+    </div>
+    <div id="secondary-results"></div> <!-- Results will be displayed here -->
+    </div>
+</div>
+   <footer>
+    <div class="footer-container">
+        <div class="footer-section">
+            <h4>Our Campus</h4>
+            <p>P.O. Box 179, New Borg El-Arab City<br>
+            Postal Code 21934, Alexandria, Egypt<br>
+            Phone: 16448<br>
+            Fax: 03-4600004</p>
+        </div>
+        <div class="footer-section">
+            <h4>Business Hours</h4>
+            <p>Sunday - Thursday<br>
+            09:00 am - 04:00 pm</p>
+        </div>
+        <div class="footer-section">
+            <h4>Cairo Office</h4>
+            <p>Concordia Building, B2111, Smart Village,<br>
+            Cairo-Alex Road.<br>
+            Postal Code 12577, Giza, Egypt<br>
+            Phone: +2 35371712 / 35371713</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+    	<p>Made By EJUST Students for EJUST students </p>
+    </div>
+</footer>
+    <script src="Prototype1.js"></script>    
+</body>
+</html>
+
