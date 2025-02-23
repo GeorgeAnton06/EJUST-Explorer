@@ -49,7 +49,7 @@ document.addEventListener("click", (event) => {
 // Function to fetch and load JSON data
 async function fetchJSONData() {
     try {
-        const response = await fetch('./data/doctor_locations.json?v=' + new Date().getTime());
+        const response = await fetch('./doctor_locations.json?v=' + new Date().getTime());
         if (!response.ok) throw new Error('Failed to fetch JSON file');
         const data = await response.json();
         console.log('Fetched JSON Data:', data); // Debugging
