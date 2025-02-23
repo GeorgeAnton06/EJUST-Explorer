@@ -52,12 +52,19 @@ async function fetchCSVData() {
         const response = await fetch('./doctor_locations.json')
   .then(response => response.json())
   .then(data => {
-    console.log("✅ Successfully fetched data:", data);
+    console.log("Successfully fetched data:", data);
     // Call the function that initializes buttons if needed
     initializeButtons();  // <- Ensure button logic is run AFTER data loads
   })
-  .catch(error => console.error("❌ Error fetching JSON:", error));
-
+  .catch(error => console.error("Error fetching JSON:", error));
+    }
+    function initializeButtons() {
+  document.querySelectorAll(".your-button-class").forEach(button => {
+    button.addEventListener("click", function() {
+      console.log("🔥 Button clicked:", this.textContent);
+    });
+  });
+}
 
 // Function to parse CSV data into an array of objects
 function parseCSV(csvText) {
