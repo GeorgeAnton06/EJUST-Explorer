@@ -54,11 +54,12 @@ async function fetchJSONData() {
         const data = await response.json();
         console.log('Fetched JSON Data:', data); // Debugging
         return data;
-    } catch (error) {
+    } catch (error) {  // 🛠️ This is the missing catch block
         console.error('Error fetching JSON:', error);
-        return [];
+        return [];  // Return an empty array to prevent crashes
     }
 }
+
 
 // Function to display search results
 function displayResults(results, resultsContainer) {
