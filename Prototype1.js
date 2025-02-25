@@ -8,8 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const labsSearchContainer = document.getElementById("labs-search-container");
 
     function toggleSearch(active, inactive) {
-        active.classList.remove("hidden");
-        inactive.classList.add("hidden");
+        active.classList.add("active");
+        inactive.classList.remove("active");
     }
 
     mainCampusBtn.addEventListener("click", () => {
