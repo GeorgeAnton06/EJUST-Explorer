@@ -1,223 +1,80 @@
-html, body {
-    height: 100%; /* Ensure the body and html take up the full height of the viewport */
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-}
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    margin: 0;
-    padding: 0;
-    background-color: Grey;
-    min-height: 100vh; /* Ensure the body is at least the height of the viewport */
-    display: flex;
-    flex-direction: column;
-}
-.body-wrapper {
-    flex: 1; /* This ensures the content takes up the remaining space */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-body > *:not(footer) {
-    flex: 1;
+    background-color: #f4f4f4;
+    padding: 20px;
 }
 
-.button-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+.campus-selection {
     margin: 20px 0;
 }
-.campus-selection {
-    display: flex;
-    flex-direction: column; /* Always stack items vertically */
-    align-items: center;
-    width: 100%;
-}
 
-#CSel {
-    text-align: center;
-    font-size: 30px;
-    margin-bottom: 10px; /* Adds some space between the text and buttons */
-    width: 100%;
-}
 button {
     padding: 12px 20px;
-    font-size: 20px;
+    font-size: 16px;
     cursor: pointer;
-    transition: 0.3s;
-    margin: 0; /* Remove any default margin */
-    width: 95%; /* Make buttons take the full page width */
-    max-width: none; /* Ensure they don't shrink */
-    border: none; /* Remove borders */
-}
-.button-container {
- display: flex;
-    flex-direction: column; /* Stack buttons vertically */
-    align-items: center;
-    width: 100%;
-    gap: 0; /* Ensure no gap between buttons */
+    border: none;
+    margin: 5px;
+    border-radius: 5px;
+    transition: background 0.3s;
 }
 
-#main-campus-btn {
-    background-color: #EE1616;
-    color: black;
-}
-
-#secondary-campus-btn {
-    background-color: #000000;
-    border-style: solid;
+#professor-btn {
+    background-color: #007bff;
     color: white;
 }
-#main-campus-btn, #secondary-campus-btn {
-    width: 95%; /* Make buttons take the full page width */
-    max-width: none; /* Ensure they don't shrink */
-    border: none; /* Remove borders */
-    margin: 0; /* Remove any margins */
-    padding: 15px; /* Adjust button height */
-    font-size: 20px;
+
+#labs-btn {
+    background-color: #28a745;
+    color: white;
 }
+
 button:hover {
-    opacity: 0.65;
+    opacity: 0.8;
 }
 
-/* Hide content initially */
+/* Hide elements initially */
 .hidden {
     display: none;
 }
 
-/* Content Sections */
-.campus-content {
-    margin-top: 10px;
-    padding: 10px;
-    border-radius: 10px;
-    background-color: #f8f9fa;
-    width: 93.5%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 15px;
-    opacity: 0; /* Start hidden */
-    transform: translateY(20px); /* Start slightly lower */
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-}
-
-/* Hidden class */
-.hidden {
-    display: none;
-}
-
-/* Show campus content smoothly */
-.show {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
-}
 .search-container {
+    margin-top: 20px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    margin: 20px 0;
+    align-items: center;
+    gap: 5px;
 }
 
 .search-container input {
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
-    border-radius: 5px 0 0 5px;
-    width: 300px;
+    border-radius: 5px;
+    width: 250px;
 }
 
 .search-container button {
-    padding: 11px 12px; /* Smaller padding */
-    font-size: 14px; /* Smaller font size */
-    border: 1px solid #EE1616;
-    border-radius: 0 5px 5px 0;
-    background-color: #EE1616;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    background-color: #007bff;
     color: white;
     cursor: pointer;
-    width: 10%;
+    border-radius: 5px;
 }
 
 .search-container button:hover {
-    background-color: #cc0000;
+    background-color: #0056b3;
 }
 
-#main-results, #secondary-results {
+#professor-results, #labs-results {
     margin-top: 20px;
     text-align: left;
+    background: white;
     padding: 10px;
-    background-color: #f8f9fa;
     border-radius: 5px;
-    width: 80%;
+    width: 60%;
     margin-left: auto;
     margin-right: auto;
-}
-footer {
-    background-color: #333;
-    color: #fff;
-    padding: 20px 0;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    margin-top: auto; /* Pushes the footer to the bottom */
-    width: 100%; /* Ensure the footer spans the full width */
-}
-
-.footer-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.footer-section {
-    flex: 1;
-    min-width: 200px;
-    margin: 10px;
-}
-
-.footer-section h4 {
-    font-size: 16px;
-    margin-bottom: 10px;
-}
-
-.footer-section p,
-.footer-section ul {
-    margin: 0;
-    line-height: 1.6;
-}
-
-.footer-section ul {
-    list-style: none;
-    padding: 0;
-}
-
-.footer-section ul li {
-    margin-bottom: 5px;
-}
-
-.footer-section ul li a {
-    color: #fff;
-    text-decoration: none;
-}
-
-.footer-section ul li a:hover {
-    text-decoration: underline;
-}
-
-.footer-bottom {
-    text-align: center;
-    padding: 10px 20px;
-    border-top: 1px solid #444;
-    margin-top: 20px;
-    background-color: #111111;
-}
-
-.footer-bottom p {
-    margin: 5px 0;
-    font-weight: bold;
 }
