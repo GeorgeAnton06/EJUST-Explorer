@@ -157,6 +157,15 @@ button:hover {
 }
 /* Keep existing styles and add only these */
 
+/* Ensure buttons stack on mobile */
+@media (max-width: 600px) {
+    .button-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
 #search-buttons {
     display: flex;
     justify-content: center;
@@ -170,6 +179,7 @@ button:hover {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    width: 100%;
 }
 
 #professor-btn {
