@@ -24,13 +24,23 @@
     <div id="main-campus-content" class="campus-content hidden">
         <h2>Main Campus</h2>
         <p>Welcome to the Main Campus! Here you will find the administration offices, lecture halls, and libraries.</p>
-    <div class="search-container">
-        <input type="text" id="main-search" placeholder="Search for a professor...">
-        <button id="main-search-btn"><i class="fas fa-search"></i></button> <!-- Search button with icon -->
-    </div>
-    <div id="main-results"></div> <!-- Results will be displayed here -->
-</div>
-</div>
+
+        <div id="search-buttons" class="hidden">
+            <button id="professor-btn">Search for Professor</button>
+            <button id="labs-btn">Search for Labs</button>
+        </div>
+
+        <div id="professor-search-container" class="search-container hidden">
+            <input type="text" id="professor-search" placeholder="Search for a professor...">
+            <button id="professor-search-btn">🔍</button>
+            <div id="professor-results"></div>
+        </div>
+
+        <div id="labs-search-container" class="search-container hidden">
+            <input type="text" id="labs-search" placeholder="Search for a lab...">
+            <button id="labs-search-btn">🔍</button>
+            <div id="labs-results"></div>
+        </div>
     </div>
 
     <div id="secondary-campus-content" class="campus-content hidden">
