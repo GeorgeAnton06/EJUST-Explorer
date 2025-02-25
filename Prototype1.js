@@ -74,7 +74,7 @@ function displayResults(results, resultsContainer) {
         resultDiv.innerHTML = `
             <h3>${result.Prof || "Unknown"}</h3>
             <p><strong>Location:</strong> ${result.Location || "Unknown"}</p>
-            <p><strong>Description:</strong> ${result.discreption || "No description available"}</p>
+            <p><strong>Description:</strong> ${result.description || "No description available"}</p>
         `;
         resultsContainer.appendChild(resultDiv);
     });
