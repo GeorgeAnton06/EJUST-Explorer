@@ -24,7 +24,7 @@ function showCampusContent(showContent, hideContent) {
 
 // Function to toggle search bars
 function toggleSearch(active, inactive1, inactive2) {
-    active.classList.remove("hidden");
+    active.classList.toggle("hidden");
     inactive1.classList.add("hidden");
     inactive2.classList.add("hidden");
 }
@@ -33,7 +33,7 @@ function toggleSearch(active, inactive1, inactive2) {
 if (mainCampusBtn && secondaryCampusBtn) {
     mainCampusBtn.addEventListener("click", (event) => {
         showCampusContent(mainCampusContent, secondaryCampusContent);
-        searchButtons.classList.remove("hidden"); // Show search buttons
+        searchButtons.classList.remove("hidden");
         event.stopPropagation();
     });
 
@@ -42,6 +42,16 @@ if (mainCampusBtn && secondaryCampusBtn) {
         event.stopPropagation();
     });
 }
+
+// Collapse content when clicking outside
+document.addEventListener("click", (event) => {
+    if (!mainCampusContent.contains(event.target) && event.target !== mainCampusBtn) {
+        mainCampusContent.classList.add("hidden");
+        searchButtons.classList.add("hidden");
+        professorSearchContainer.classList.add("hidden");
+        labsSearchContainer.classList.add("hidden");
+    }
+});
 
 // Event listeners for professor and labs search buttons
 professorBtn.addEventListener("click", () => {
@@ -66,7 +76,7 @@ async function fetchJSONData(url) {
 
 // Function to display search results
 function displayResults(results, resultsContainer, isLab) {
-    resultsContainer.innerHTML = ""; // Clear previous results
+    resultsContainer.innerHTML = "";
     if (results.length === 0) {
         resultsContainer.innerHTML = "<p>No results found.</p>";
         return;
