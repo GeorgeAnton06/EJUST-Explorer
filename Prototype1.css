@@ -194,10 +194,14 @@ button:hover {
 
 .search-container {
     margin-top: 20px;
-    display: flex;
+    display: none; /* Initially hidden */
     justify-content: center;
     align-items: center;
     gap: 5px;
+}
+
+.search-container.active {
+    display: flex; /* Only show when active */
 }
 
 .search-container input {
