@@ -8,6 +8,7 @@ const professorBtn = document.getElementById("professor-btn");
 const labsBtn = document.getElementById("labs-btn");
 const professorSearchContainer = document.getElementById("professor-search-container");
 const labsSearchContainer = document.getElementById("labs-search-container");
+const secondarySearchContainer = document.getElementById("secondary-search-container");
 
 // Function to show campus content
 function showCampusContent(showContent, hideContent) {
@@ -22,9 +23,10 @@ function showCampusContent(showContent, hideContent) {
 }
 
 // Function to toggle search bars
-function toggleSearch(active, inactive) {
+function toggleSearch(active, inactive1, inactive2) {
     active.classList.remove("hidden");
-    inactive.classList.add("hidden");
+    inactive1.classList.add("hidden");
+    inactive2.classList.add("hidden");
 }
 
 // Event listeners for main and secondary campus buttons
@@ -43,11 +45,11 @@ if (mainCampusBtn && secondaryCampusBtn) {
 
 // Event listeners for professor and labs search buttons
 professorBtn.addEventListener("click", () => {
-    toggleSearch(professorSearchContainer, labsSearchContainer);
+    toggleSearch(professorSearchContainer, labsSearchContainer, secondarySearchContainer);
 });
 
 labsBtn.addEventListener("click", () => {
-    toggleSearch(labsSearchContainer, professorSearchContainer);
+    toggleSearch(labsSearchContainer, professorSearchContainer, secondarySearchContainer);
 });
 
 // Function to fetch JSON data
@@ -104,6 +106,7 @@ async function initializeSearch() {
 
     setupSearch("professor-search", "professor-search-btn", "professor-results", professorsData, "Prof", false);
     setupSearch("labs-search", "labs-search-btn", "labs-results", labsData, "Name", true);
+    setupSearch("secondary-search", "secondary-search-btn", "secondary-results", professorsData, "Prof", false);
 }
 
 initializeSearch();
