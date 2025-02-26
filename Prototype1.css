@@ -157,86 +157,22 @@ button:hover {
 }
 /* Keep existing styles and add only these */
 
-/* Ensure buttons stack on mobile */
-@media (max-width: 600px) {
-    .button-container {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-}
+/* Add these styles to Prototype1.css */
 
-#search-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 10px;
-}
-
-#search-buttons button {
-    padding: 10px 15px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-}
-
-#professor-btn {
-    background-color: #007bff;
-    color: white;
-}
-
-#labs-btn {
-    background-color: #28a745;
-    color: white;
-}
-
-.search-container {
+#professors-search-container, #labs-search-container {
     margin-top: 20px;
-    display: none; /* Initially hidden */
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
 }
 
-.search-container.active {
-    display: flex; /* Only show when active */
-}
-
-.search-container input {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 250px;
-}
-
-.search-container button {
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.search-container button:hover {
-    background-color: #0056b3;
-}
-
-#professor-results, #labs-results {
+#professors-results, #labs-results {
     margin-top: 20px;
     text-align: left;
-    background: white;
     padding: 10px;
+    background-color: #f8f9fa;
     border-radius: 5px;
-    width: 60%;
+    width: 80%;
     margin-left: auto;
     margin-right: auto;
 }
-
 footer {
     background-color: #333;
     color: #fff;
