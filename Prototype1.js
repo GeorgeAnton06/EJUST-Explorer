@@ -8,46 +8,66 @@ const searchLabsBtn = document.getElementById("search-labs-btn");
 const professorsSearchContainer = document.getElementById("professors-search-container");
 const labsSearchContainer = document.getElementById("labs-search-container");
 
-// Function to show campus content
-function showCampusContent(showContent, hideContent) {
-    hideContent.classList.remove("show");
+// Function to toggle visibility
+function toggleVisibility(showElement, hideElement) {
+    hideElement.classList.remove("show");
     setTimeout(() => {
-        hideContent.classList.add("hidden");
-        showContent.classList.remove("hidden");
+        hideElement.classList.add("hidden");
+        showElement.classList.remove("hidden");
         setTimeout(() => {
-            showContent.classList.add("show");
+            showElement.classList.add("show");
         }, 10);
     }, 500);
 }
 
-// Function to hide both contents
-function hideCampusContent() {
-    mainCampusContent.classList.remove("show");
-    secondaryCampusContent.classList.remove("show");
+// Function to hide both elements
+function hideBoth(element1, element2) {
+    element1.classList.remove("show");
+    element2.classList.remove("show");
     setTimeout(() => {
-        mainCampusContent.classList.add("hidden");
-        secondaryCampusContent.classList.add("hidden");
+        element1.classList.add("hidden");
+        element2.classList.add("hidden");
     }, 500);
 }
 
 // Event listeners for campus buttons
 if (mainCampusBtn && secondaryCampusBtn) {
     mainCampusBtn.addEventListener("click", (event) => {
-        showCampusContent(mainCampusContent, secondaryCampusContent);
+        toggleVisibility(mainCampusContent, secondaryCampusContent);
         event.stopPropagation();
     });
 
     secondaryCampusBtn.addEventListener("click", (event) => {
-        showCampusContent(secondaryCampusContent, mainCampusContent);
+        toggleVisibility(secondaryCampusContent, mainCampusContent);
+        event.stopPropagation();
+    });
+}
+
+// Event listeners for search buttons
+if (searchProfessorsBtn && searchLabsBtn) {
+    searchProfessorsBtn.addEventListener("click", (event) => {
+        toggleVisibility(professorsSearchContainer, labsSearchContainer);
+        event.stopPropagation();
+    });
+
+    searchLabsBtn.addEventListener("click", (event) => {
+        toggleVisibility(labsSearchContainer, professorsSearchContainer);
         event.stopPropagation();
     });
 }
 
 // Hide content when clicking outside
 document.addEventListener("click", (event) => {
+    // Hide campus content if clicking outside
     if (!mainCampusContent.contains(event.target) && !secondaryCampusContent.contains(event.target) &&
         event.target !== mainCampusBtn && event.target !== secondaryCampusBtn) {
-        hideCampusContent();
+        hideBoth(mainCampusContent, secondaryCampusContent);
+    }
+
+    // Hide search containers if clicking outside
+    if (!professorsSearchContainer.contains(event.target) && !labsSearchContainer.contains(event.target) &&
+        event.target !== searchProfessorsBtn && event.target !== searchLabsBtn) {
+        hideBoth(professorsSearchContainer, labsSearchContainer);
     }
 });
 
@@ -103,32 +123,6 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
         }
     });
 }
-
-// Toggle visibility for search bars
-if (searchProfessorsBtn && searchLabsBtn) {
-    searchProfessorsBtn.addEventListener('click', () => {
-        // Toggle professors search container
-        professorsSearchContainer.classList.toggle('hidden');
-        // Ensure labs search container is hidden
-        labsSearchContainer.classList.add('hidden');
-    });
-
-    searchLabsBtn.addEventListener('click', () => {
-        // Toggle labs search container
-        labsSearchContainer.classList.toggle('hidden');
-        // Ensure professors search container is hidden
-        professorsSearchContainer.classList.add('hidden');
-    });
-}
-
-// Hide search containers when clicking outside
-document.addEventListener('click', (event) => {
-    if (!professorsSearchContainer.contains(event.target) && !labsSearchContainer.contains(event.target) &&
-        event.target !== searchProfessorsBtn && event.target !== searchLabsBtn) {
-        professorsSearchContainer.classList.add('hidden');
-        labsSearchContainer.classList.add('hidden');
-    }
-});
 
 // Main function to initialize everything
 async function initializeSearch() {
