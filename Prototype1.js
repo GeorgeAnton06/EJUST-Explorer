@@ -23,10 +23,13 @@ function showCampusContent(showContent, hideContent) {
 }
 
 // Function to toggle search bars
-function toggleSearch(active, inactive1, inactive2) {
-    active.classList.toggle("hidden");
-    inactive1.classList.add("hidden");
-    inactive2.classList.add("hidden");
+function toggleSearch(active, inactive) {
+    if (active.classList.contains("hidden")) {
+        active.classList.remove("hidden");
+        inactive.classList.add("hidden");
+    } else {
+        active.classList.add("hidden");
+    }
 }
 
 // Event listeners for main and secondary campus buttons
@@ -55,11 +58,11 @@ document.addEventListener("click", (event) => {
 
 // Event listeners for professor and labs search buttons
 professorBtn.addEventListener("click", () => {
-    toggleSearch(professorSearchContainer, labsSearchContainer, secondarySearchContainer);
+    toggleSearch(professorSearchContainer, labsSearchContainer);
 });
 
 labsBtn.addEventListener("click", () => {
-    toggleSearch(labsSearchContainer, professorSearchContainer, secondarySearchContainer);
+    toggleSearch(labsSearchContainer, professorSearchContainer);
 });
 
 // Function to fetch JSON data
