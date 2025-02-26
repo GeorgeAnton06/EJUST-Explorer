@@ -121,5 +121,4 @@ async function initializeSearch() {
     setupSearch("labs-search", "labs-search-btn", "labs-results", labsData, "Name", true);
     setupSearch("secondary-search", "secondary-search-btn", "secondary-results", professorsData, "Prof", false);
 }
-
 initializeSearch();
