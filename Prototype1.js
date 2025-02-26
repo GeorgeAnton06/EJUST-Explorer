@@ -31,7 +31,7 @@ function hideCampusContent() {
     }, 500);
 }
 
-// Event listeners for buttons
+// Event listeners for campus buttons
 if (mainCampusBtn && secondaryCampusBtn) {
     mainCampusBtn.addEventListener("click", (event) => {
         showCampusContent(mainCampusContent, secondaryCampusContent);
@@ -125,14 +125,16 @@ async function initializeSearch() {
     if (!Array.isArray(professorsData) || professorsData.length === 0) {
         console.error("❌ No valid data found in professors JSON file.");
     } else {
-        // Set up search for Professors
+        // Set up search for Professors (Main Campus)
         setupSearch('professors-search', 'professors-search-btn', 'professors-results', professorsData);
+        // Set up search for Secondary Campus
+        setupSearch('secondary-search', 'secondary-search-btn', 'secondary-results', professorsData);
     }
 
     if (!Array.isArray(labsData) || labsData.length === 0) {
         console.error("❌ No valid data found in labs JSON file.");
     } else {
-        // Set up search for Labs
+        // Set up search for Labs (Main Campus)
         setupSearch('labs-search', 'labs-search-btn', 'labs-results', labsData);
     }
 }
