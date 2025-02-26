@@ -159,11 +159,13 @@ button:hover {
 
 /* Add these styles to Prototype1.css */
 
+/* Add these styles to Prototype1.css */
+
 #professors-search-container, #labs-search-container {
     margin-top: 20px;
 }
 
-#professors-results, #labs-results {
+#professors-results, #labs-results, #secondary-results {
     margin-top: 20px;
     text-align: left;
     padding: 10px;
