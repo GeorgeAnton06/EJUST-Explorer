@@ -107,12 +107,16 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
 // Toggle visibility for search bars
 if (searchProfessorsBtn && searchLabsBtn) {
     searchProfessorsBtn.addEventListener('click', () => {
+        // Toggle professors search container
         professorsSearchContainer.classList.toggle('hidden');
+        // Ensure labs search container is hidden
         labsSearchContainer.classList.add('hidden');
     });
 
     searchLabsBtn.addEventListener('click', () => {
+        // Toggle labs search container
         labsSearchContainer.classList.toggle('hidden');
+        // Ensure professors search container is hidden
         professorsSearchContainer.classList.add('hidden');
     });
 }
