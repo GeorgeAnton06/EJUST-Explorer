@@ -99,4 +99,67 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
         const query = searchInput.value.trim().toLowerCase();
         console.log(`🔍 Searching for: "${query}"`); // Debugging
 
-        //
+        // Filter results safely
+        const filteredResults = data.filter(item => 
+            (item.Prof && item.Prof.toLowerCase().includes(query)) || 
+            (item.Name && item.Name.toLowerCase().includes(query))
+        );
+        console.log(`📌 Found ${filteredResults.length} results`); // Debugging
+
+        displayResults(filteredResults, resultsContainer);
+    });
+
+    searchInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            searchButton.click();
+        }
+    });
+}
+
+// Main function to initialize everything
+async function initializeSearch() {
+    const professorsData = await fetchJSONData('./doctor_locations.json'); // Fetch professors data
+    const labsData = await fetchJSONData('./labs.json'); // Fetch labs data
+
+    // Ensure JSON data is not empty before setting up search
+    if (!Array.isArray(professorsData) || professorsData.length === 0) {
+        console.error("❌ No valid data found in professors JSON file.");
+    } else {
+        // Set up search for Professors
+        setupSearch('professors-search', 'professors-search-btn', 'professors-results', professorsData);
+    }
+
+    if (!Array.isArray(labsData) || labsData.length === 0) {
+        console.error("❌ No valid data found in labs JSON file.");
+    } else {
+        // Set up search for Labs
+        setupSearch('labs-search', 'labs-search-btn', 'labs-results', labsData);
+    }
+}
+
+// Event listeners for new buttons
+if (searchProfessorsBtn && searchLabsBtn) {
+    searchProfessorsBtn.addEventListener('click', (event) => {
+        professorsSearchContainer.classList.toggle('hidden');
+        labsSearchContainer.classList.add('hidden');
+        event.stopPropagation();
+    });
+
+    searchLabsBtn.addEventListener('click', (event) => {
+        labsSearchContainer.classList.toggle('hidden');
+        professorsSearchContainer.classList.add('hidden');
+        event.stopPropagation();
+    });
+}
+
+// Hide search containers when clicking outside
+document.addEventListener('click', (event) => {
+    if (!professorsSearchContainer.contains(event.target) && !labsSearchContainer.contains(event.target) &&
+        event.target !== searchProfessorsBtn && event.target !== searchLabsBtn) {
+        professorsSearchContainer.classList.add('hidden');
+        labsSearchContainer.classList.add('hidden');
+    }
+});
+
+// Call the initialize function when the page loads
+window.addEventListener('DOMContentLoaded', initializeSearch);
