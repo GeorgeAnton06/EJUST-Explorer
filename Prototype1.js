@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     labsSearchContainer.classList.add("hidden");
 });
 
-// Function to show one section and hide the other
+// Function to toggle visibility of sections
 function toggleSection(showSection, hideSection) {
     if (showSection.classList.contains("hidden")) {
         showSection.classList.remove("hidden");
@@ -109,3 +109,4 @@ async function initializeSearch() {
 
 // Call the initialize function when the page loads
 window.addEventListener('DOMContentLoaded', initializeSearch);
+
