@@ -8,66 +8,46 @@ const searchLabsBtn = document.getElementById("search-labs-btn");
 const professorsSearchContainer = document.getElementById("professors-search-container");
 const labsSearchContainer = document.getElementById("labs-search-container");
 
-// Function to toggle visibility
-function toggleVisibility(showElement, hideElement) {
-    hideElement.classList.remove("show");
+// Function to show campus content
+function showCampusContent(showContent, hideContent) {
+    hideContent.classList.remove("show");
     setTimeout(() => {
-        hideElement.classList.add("hidden");
-        showElement.classList.remove("hidden");
+        hideContent.classList.add("hidden");
+        showContent.classList.remove("hidden");
         setTimeout(() => {
-            showElement.classList.add("show");
+            showContent.classList.add("show");
         }, 10);
     }, 500);
 }
 
-// Function to hide both elements
-function hideBoth(element1, element2) {
-    element1.classList.remove("show");
-    element2.classList.remove("show");
+// Function to hide both contents
+function hideCampusContent() {
+    mainCampusContent.classList.remove("show");
+    secondaryCampusContent.classList.remove("show");
     setTimeout(() => {
-        element1.classList.add("hidden");
-        element2.classList.add("hidden");
+        mainCampusContent.classList.add("hidden");
+        secondaryCampusContent.classList.add("hidden");
     }, 500);
 }
 
 // Event listeners for campus buttons
 if (mainCampusBtn && secondaryCampusBtn) {
     mainCampusBtn.addEventListener("click", (event) => {
-        toggleVisibility(mainCampusContent, secondaryCampusContent);
+        showCampusContent(mainCampusContent, secondaryCampusContent);
         event.stopPropagation();
     });
 
     secondaryCampusBtn.addEventListener("click", (event) => {
-        toggleVisibility(secondaryCampusContent, mainCampusContent);
-        event.stopPropagation();
-    });
-}
-
-// Event listeners for search buttons
-if (searchProfessorsBtn && searchLabsBtn) {
-    searchProfessorsBtn.addEventListener("click", (event) => {
-        toggleVisibility(professorsSearchContainer, labsSearchContainer);
-        event.stopPropagation();
-    });
-
-    searchLabsBtn.addEventListener("click", (event) => {
-        toggleVisibility(labsSearchContainer, professorsSearchContainer);
+        showCampusContent(secondaryCampusContent, mainCampusContent);
         event.stopPropagation();
     });
 }
 
 // Hide content when clicking outside
 document.addEventListener("click", (event) => {
-    // Hide campus content if clicking outside
     if (!mainCampusContent.contains(event.target) && !secondaryCampusContent.contains(event.target) &&
         event.target !== mainCampusBtn && event.target !== secondaryCampusBtn) {
-        hideBoth(mainCampusContent, secondaryCampusContent);
-    }
-
-    // Hide search containers if clicking outside
-    if (!professorsSearchContainer.contains(event.target) && !labsSearchContainer.contains(event.target) &&
-        event.target !== searchProfessorsBtn && event.target !== searchLabsBtn) {
-        hideBoth(professorsSearchContainer, labsSearchContainer);
+        hideCampusContent();
     }
 });
 
@@ -75,7 +55,7 @@ document.addEventListener("click", (event) => {
 async function fetchJSONData(url) {
     try {
         const response = await fetch(url + '?v=' + new Date().getTime());
-        if (!response.ok) throw new Error(Failed to fetch JSON file: ${response.statusText});
+        if (!response.ok) throw new Error(`Failed to fetch JSON file: ${response.statusText}`);
         const data = await response.json();
         return data;
     } catch (error) {
@@ -93,11 +73,11 @@ function displayResults(results, resultsContainer) {
     }
     results.forEach(result => {
         const resultDiv = document.createElement('div');
-        resultDiv.innerHTML = 
+        resultDiv.innerHTML = `
             <h3>${result.Prof || result.Name || "Unknown"}</h3>
             <p><strong>Location:</strong> ${result.Location || result.location || "Unknown"}</p>
             <p><strong>Description:</strong> ${result.description || "No description available"}</p>
-        ;
+        `;
         resultsContainer.appendChild(resultDiv);
     });
 }
@@ -134,6 +114,27 @@ async function initializeSearch() {
     setupSearch('labs-search', 'labs-search-btn', 'labs-results', labsData);
 }
 
+// Toggle visibility for search bars
+if (searchProfessorsBtn && searchLabsBtn) {
+    searchProfessorsBtn.addEventListener('click', () => {
+        professorsSearchContainer.classList.toggle('hidden');
+        labsSearchContainer.classList.add('hidden');
+    });
+
+    searchLabsBtn.addEventListener('click', () => {
+        labsSearchContainer.classList.toggle('hidden');
+        professorsSearchContainer.classList.add('hidden');
+    });
+}
+
+// Hide search containers when clicking outside
+document.addEventListener('click', (event) => {
+    if (!professorsSearchContainer.contains(event.target) && !labsSearchContainer.contains(event.target) &&
+        event.target !== searchProfessorsBtn && event.target !== searchLabsBtn) {
+        professorsSearchContainer.classList.add('hidden');
+        labsSearchContainer.classList.add('hidden');
+    }
+});
+
 // Call the initialize function when the page loads
 window.addEventListener('DOMContentLoaded', initializeSearch);
-
