@@ -8,12 +8,6 @@ const searchLabsBtn = document.getElementById("search-labs-btn");
 const professorsSearchContainer = document.getElementById("professors-search-container");
 const labsSearchContainer = document.getElementById("labs-search-container");
 
-// Ensure both search bars are hidden initially
-document.addEventListener("DOMContentLoaded", () => {
-    professorsSearchContainer.classList.add("hidden");
-    labsSearchContainer.classList.add("hidden");
-});
-
 // Function to show campus content
 function showCampusContent(showContent, hideContent) {
     hideContent.classList.remove("show");
@@ -102,7 +96,35 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
         );
         displayResults(filteredResults, resultsContainer);
     });
+
+    searchInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            searchButton.click();
+        }
+    });
 }
+
+// Toggle visibility for search bars
+if (searchProfessorsBtn && searchLabsBtn) {
+    searchProfessorsBtn.addEventListener('click', () => {
+        professorsSearchContainer.classList.toggle('hidden');
+        labsSearchContainer.classList.add('hidden');
+    });
+
+    searchLabsBtn.addEventListener('click', () => {
+        labsSearchContainer.classList.toggle('hidden');
+        professorsSearchContainer.classList.add('hidden');
+    });
+}
+
+// Hide search containers when clicking outside
+document.addEventListener('click', (event) => {
+    if (!professorsSearchContainer.contains(event.target) && !labsSearchContainer.contains(event.target) &&
+        event.target !== searchProfessorsBtn && event.target !== searchLabsBtn) {
+        professorsSearchContainer.classList.add('hidden');
+        labsSearchContainer.classList.add('hidden');
+    }
+});
 
 // Main function to initialize everything
 async function initializeSearch() {
@@ -114,30 +136,5 @@ async function initializeSearch() {
     setupSearch('labs-search', 'labs-search-btn', 'labs-results', labsData);
 }
 
-// Toggle visibility for search bars
-searchProfessorsBtn.addEventListener('click', () => {
-    const isHidden = professorsSearchContainer.classList.contains('hidden');
-    professorsSearchContainer.classList.toggle('hidden', !isHidden);
-    labsSearchContainer.classList.add('hidden');
-});
-
-searchLabsBtn.addEventListener('click', () => {
-    const isHidden = labsSearchContainer.classList.contains('hidden');
-    labsSearchContainer.classList.toggle('hidden', !isHidden);
-    professorsSearchContainer.classList.add('hidden');
-});
-
-// Hide search containers when clicking outside
-document.addEventListener('click', (event) => {
-    if (!professorsSearchContainer.contains(event.target) && 
-        !labsSearchContainer.contains(event.target) && 
-        event.target !== searchProfessorsBtn && 
-        event.target !== searchLabsBtn) {
-        professorsSearchContainer.classList.add('hidden');
-        labsSearchContainer.classList.add('hidden');
-    }
-});
-
 // Call the initialize function when the page loads
 window.addEventListener('DOMContentLoaded', initializeSearch);
-
