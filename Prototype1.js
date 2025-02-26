@@ -23,10 +23,10 @@ function showCampusContent(showContent, hideContent) {
 }
 
 // Function to toggle search bars
-function toggleSearch(active, active1, active2) {
+function toggleSearch(active, inactive1, inactive2) {
     active.classList.toggle("hidden");
-    active1.classList.add("hidden");
-    active2.classList.add("hidden");
+    inactive1.classList.add("hidden");
+    inactive2.classList.add("hidden");
 }
 
 // Event listeners for main and secondary campus buttons
