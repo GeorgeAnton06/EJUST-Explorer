@@ -3,9 +3,9 @@ const mainCampusBtn = document.getElementById("main-campus-btn");
 const secondaryCampusBtn = document.getElementById("secondary-campus-btn");
 const mainCampusContent = document.getElementById("main-campus-content");
 const secondaryCampusContent = document.getElementById("secondary-campus-content");
-const professorBtn = document.getElementById("professor-btn");
-const labsBtn = document.getElementById("labs-btn");
-const professorSearchContainer = document.getElementById("professor-search-container");
+const searchProfessorsBtn = document.getElementById("search-professors-btn");
+const searchLabsBtn = document.getElementById("search-labs-btn");
+const professorsSearchContainer = document.getElementById("professors-search-container");
 const labsSearchContainer = document.getElementById("labs-search-container");
 
 // Function to show campus content
@@ -24,18 +24,20 @@ function showCampusContent(showContent, hideContent) {
 function hideCampusContent() {
     mainCampusContent.classList.remove("show");
     secondaryCampusContent.classList.remove("show");
+
     setTimeout(() => {
         mainCampusContent.classList.add("hidden");
         secondaryCampusContent.classList.add("hidden");
     }, 500);
 }
 
-// Event listeners for main and secondary campus buttons
+// Event listeners for buttons
 if (mainCampusBtn && secondaryCampusBtn) {
     mainCampusBtn.addEventListener("click", (event) => {
         showCampusContent(mainCampusContent, secondaryCampusContent);
         event.stopPropagation();
     });
+
     secondaryCampusBtn.addEventListener("click", (event) => {
         showCampusContent(secondaryCampusContent, mainCampusContent);
         event.stopPropagation();
@@ -47,50 +49,34 @@ document.addEventListener("click", (event) => {
     if (!mainCampusContent.contains(event.target) && !secondaryCampusContent.contains(event.target) &&
         event.target !== mainCampusBtn && event.target !== secondaryCampusBtn) {
         hideCampusContent();
-        professorSearchContainer.classList.add("hidden");
-        labsSearchContainer.classList.add("hidden");
     }
 });
-
-// Function to toggle search bars
-function toggleSearch(active, inactive) {
-    active.classList.toggle("hidden");
-    inactive.classList.add("hidden");
-}
-
-// Ensure buttons are functional
-if (professorBtn && labsBtn) {
-    professorBtn.addEventListener("click", () => {
-        toggleSearch(professorSearchContainer, labsSearchContainer);
-    });
-    labsBtn.addEventListener("click", () => {
-        toggleSearch(labsSearchContainer, professorSearchContainer);
-    });
-}
 
 // Function to fetch JSON data
 async function fetchJSONData(url) {
     try {
-        const response = await fetch(url + "?v=" + new Date().getTime());
-        if (!response.ok) throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
-        return await response.json();
+        const response = await fetch(url + '?v=' + new Date().getTime());
+        if (!response.ok) throw new Error(`Failed to fetch JSON file: ${response.statusText}`);
+        const data = await response.json();
+        console.log('✅ Fetched JSON Data:', data); // Debugging
+        return data;
     } catch (error) {
-        console.error("❌ Error fetching JSON:", error);
-        return [];
+        console.error('❌ Error fetching JSON:', error);
+        return [];  // Return empty array to prevent crashes
     }
 }
 
 // Function to display search results
 function displayResults(results, resultsContainer) {
-    resultsContainer.innerHTML = "";
+    resultsContainer.innerHTML = ''; // Clear previous results
     if (results.length === 0) {
-        resultsContainer.innerHTML = "<p>No results found.</p>";
+        resultsContainer.innerHTML = '<p>No results found.</p>';
         return;
     }
     results.forEach(result => {
-        const resultDiv = document.createElement("div");
+        const resultDiv = document.createElement('div');
         resultDiv.innerHTML = `
-            <h3>${result.Prof || "Unknown"}</h3>
+            <h3>${result.Prof || result.Name || "Unknown"}</h3>
             <p><strong>Location:</strong> ${result.Location || "Unknown"}</p>
             <p><strong>Description:</strong> ${result.description || "No description available"}</p>
         `;
@@ -109,27 +95,8 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
         return;
     }
 
-    searchButton.addEventListener("click", () => {
+    searchButton.addEventListener('click', () => {
         const query = searchInput.value.trim().toLowerCase();
-        const filteredResults = data.filter(item => item.Prof && item.Prof.toLowerCase().includes(query));
-        displayResults(filteredResults, resultsContainer);
-    });
+        console.log(`🔍 Searching for: "${query}"`); // Debugging
 
-    searchInput.addEventListener("keypress", (event) => {
-        if (event.key === "Enter") {
-            searchButton.click();
-        }
-    });
-}
-
-// Main function to initialize everything
-async function initializeSearch() {
-    const jsonData = await fetchJSONData("doctor_locations.json");
-    const labsData = await fetchJSONData("labs.json");
-    
-    setupSearch("professor-search", "professor-search-btn", "professor-results", jsonData);
-    setupSearch("labs-search", "labs-search-btn", "labs-results", labsData);
-}
-
-// Call the initialize function when the page loads
-window.addEventListener("DOMContentLoaded", initializeSearch);
+        //
