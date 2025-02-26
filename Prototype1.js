@@ -54,22 +54,19 @@ document.addEventListener("click", (event) => {
 
 // Function to toggle search bars
 function toggleSearch(active, inactive) {
-    if (active.classList.contains("hidden")) {
-        active.classList.remove("hidden");
-        inactive.classList.add("hidden");
-    } else {
-        active.classList.add("hidden");
-    }
+    active.classList.toggle("hidden");
+    inactive.classList.add("hidden");
 }
 
-// Event listeners for search buttons
-professorBtn.addEventListener("click", () => {
-    toggleSearch(professorSearchContainer, labsSearchContainer);
-});
-
-labsBtn.addEventListener("click", () => {
-    toggleSearch(labsSearchContainer, professorSearchContainer);
-});
+// Ensure buttons are functional
+if (professorBtn && labsBtn) {
+    professorBtn.addEventListener("click", () => {
+        toggleSearch(professorSearchContainer, labsSearchContainer);
+    });
+    labsBtn.addEventListener("click", () => {
+        toggleSearch(labsSearchContainer, professorSearchContainer);
+    });
+}
 
 // Function to fetch JSON data
 async function fetchJSONData(url) {
