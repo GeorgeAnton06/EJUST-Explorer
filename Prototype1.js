@@ -9,8 +9,10 @@ const professorsSearchContainer = document.getElementById("professors-search-con
 const labsSearchContainer = document.getElementById("labs-search-container");
 
 // Ensure both search bars are hidden initially
-professorsSearchContainer.classList.add("hidden");
-labsSearchContainer.classList.add("hidden");
+document.addEventListener("DOMContentLoaded", () => {
+    professorsSearchContainer.classList.add("hidden");
+    labsSearchContainer.classList.add("hidden");
+});
 
 // Function to show campus content
 function showCampusContent(showContent, hideContent) {
