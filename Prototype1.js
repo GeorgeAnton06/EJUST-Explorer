@@ -7,6 +7,9 @@ const searchProfessorsBtn = document.getElementById("search-professors-btn");
 const searchLabsBtn = document.getElementById("search-labs-btn");
 const professorsSearchContainer = document.getElementById("professors-search-container");
 const labsSearchContainer = document.getElementById("labs-search-container");
+const secondarySearchContainer = document.getElementById("secondary-search");
+const secondarySearchBtn = document.getElementById("secondary-search-btn");
+const secondaryResultsContainer = document.getElementById("secondary-results");
 
 // Function to show campus content
 function showCampusContent(showContent, hideContent) {
@@ -24,7 +27,6 @@ function showCampusContent(showContent, hideContent) {
 function hideCampusContent() {
     mainCampusContent.classList.remove("show");
     secondaryCampusContent.classList.remove("show");
-
     setTimeout(() => {
         mainCampusContent.classList.add("hidden");
         secondaryCampusContent.classList.add("hidden");
@@ -55,20 +57,19 @@ document.addEventListener("click", (event) => {
 // Function to fetch JSON data
 async function fetchJSONData(url) {
     try {
-        const response = await fetch(url);
+        const response = await fetch(url + '?v=' + new Date().getTime());
         if (!response.ok) throw new Error(`Failed to fetch JSON file: ${response.statusText}`);
         const data = await response.json();
-        console.log('✅ Fetched JSON Data:', data); // Debugging
         return data;
     } catch (error) {
-        console.error('❌ Error fetching JSON:', error);
-        return [];  // Return empty array to prevent crashes
+        console.error('Error fetching JSON:', error);
+        return [];
     }
 }
 
 // Function to display search results
 function displayResults(results, resultsContainer) {
-    resultsContainer.innerHTML = ''; // Clear previous results
+    resultsContainer.innerHTML = '';
     if (results.length === 0) {
         resultsContainer.innerHTML = '<p>No results found.</p>';
         return;
@@ -77,7 +78,7 @@ function displayResults(results, resultsContainer) {
         const resultDiv = document.createElement('div');
         resultDiv.innerHTML = `
             <h3>${result.Prof || result.Name || "Unknown"}</h3>
-            <p><strong>Location:</strong> ${result.Location || "Unknown"}</p>
+            <p><strong>Location:</strong> ${result.Location || result.location || "Unknown"}</p>
             <p><strong>Description:</strong> ${result.description || "No description available"}</p>
         `;
         resultsContainer.appendChild(resultDiv);
@@ -90,76 +91,50 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
     const searchButton = document.getElementById(searchButtonId);
     const resultsContainer = document.getElementById(resultsContainerId);
 
-    if (!searchInput || !searchButton || !resultsContainer) {
-        console.error(`❌ Missing search elements: ${searchInputId}, ${searchButtonId}, ${resultsContainerId}`);
-        return;
-    }
-
     searchButton.addEventListener('click', () => {
         const query = searchInput.value.trim().toLowerCase();
-        console.log(`🔍 Searching for: "${query}"`); // Debugging
-
-        // Filter results safely
         const filteredResults = data.filter(item => 
             (item.Prof && item.Prof.toLowerCase().includes(query)) || 
             (item.Name && item.Name.toLowerCase().includes(query))
         );
-        console.log(`📌 Found ${filteredResults.length} results`); // Debugging
-
         displayResults(filteredResults, resultsContainer);
-    });
-
-    searchInput.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') {
-            searchButton.click();
-        }
     });
 }
 
 // Main function to initialize everything
 async function initializeSearch() {
-    const professorsData = await fetchJSONData('./doctor_locations.json'); // Fetch professors data
-    const labsData = await fetchJSONData('./labs.json'); // Fetch labs data
+    const professorsData = await fetchJSONData('./doctor_locations.json');
+    const labsData = await fetchJSONData('./labs.json');
 
-    // Ensure JSON data is not empty before setting up search
-    if (!Array.isArray(professorsData) || professorsData.length === 0) {
-        console.error("❌ No valid data found in professors JSON file.");
-    } else {
-        // Set up search for Professors (Main Campus)
-        setupSearch('professors-search', 'professors-search-btn', 'professors-results', professorsData);
-        // Set up search for Secondary Campus
-        setupSearch('secondary-search', 'secondary-search-btn', 'secondary-results', professorsData);
-    }
-
-    if (!Array.isArray(labsData) || labsData.length === 0) {
-        console.error("❌ No valid data found in labs JSON file.");
-    } else {
-        // Set up search for Labs (Main Campus)
-        setupSearch('labs-search', 'labs-search-btn', 'labs-results', labsData);
-    }
+    setupSearch('professors-search', 'professors-search-btn', 'professors-results', professorsData);
+    setupSearch('secondary-search', 'secondary-search-btn', 'secondary-results', professorsData);
+    setupSearch('labs-search', 'labs-search-btn', 'labs-results', labsData);
 }
 
-// Event listeners for new buttons
-if (searchProfessorsBtn && searchLabsBtn) {
-    searchProfessorsBtn.addEventListener('click', (event) => {
-        professorsSearchContainer.classList.toggle('hidden');
-        labsSearchContainer.classList.add('hidden');
-        event.stopPropagation();
-    });
+// Toggle visibility for search bars
+searchProfessorsBtn.addEventListener('click', () => {
+    const isActive = !professorsSearchContainer.classList.contains('hidden');
+    professorsSearchContainer.classList.toggle('hidden');
+    labsSearchContainer.classList.add('hidden');
 
-    searchLabsBtn.addEventListener('click', (event) => {
-        labsSearchContainer.classList.toggle('hidden');
-        professorsSearchContainer.classList.add('hidden');
-        event.stopPropagation();
-    });
-}
+    if (!isActive) {
+        searchProfessorsBtn.classList.add('active');
+        searchLabsBtn.classList.remove('active');
+    } else {
+        searchProfessorsBtn.classList.remove('active');
+    }
+});
 
-// Hide search containers when clicking outside
-document.addEventListener('click', (event) => {
-    if (!professorsSearchContainer.contains(event.target) && !labsSearchContainer.contains(event.target) &&
-        event.target !== searchProfessorsBtn && event.target !== searchLabsBtn) {
-        professorsSearchContainer.classList.add('hidden');
-        labsSearchContainer.classList.add('hidden');
+searchLabsBtn.addEventListener('click', () => {
+    const isActive = !labsSearchContainer.classList.contains('hidden');
+    labsSearchContainer.classList.toggle('hidden');
+    professorsSearchContainer.classList.add('hidden');
+
+    if (!isActive) {
+        searchLabsBtn.classList.add('active');
+        searchProfessorsBtn.classList.remove('active');
+    } else {
+        searchLabsBtn.classList.remove('active');
     }
 });
 
