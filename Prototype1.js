@@ -7,9 +7,6 @@ const searchProfessorsBtn = document.getElementById("search-professors-btn");
 const searchLabsBtn = document.getElementById("search-labs-btn");
 const professorsSearchContainer = document.getElementById("professors-search-container");
 const labsSearchContainer = document.getElementById("labs-search-container");
-const secondarySearchContainer = document.getElementById("secondary-search");
-const secondarySearchBtn = document.getElementById("secondary-search-btn");
-const secondaryResultsContainer = document.getElementById("secondary-results");
 
 // Function to show campus content
 function showCampusContent(showContent, hideContent) {
@@ -99,6 +96,12 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
         );
         displayResults(filteredResults, resultsContainer);
     });
+
+    searchInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            searchButton.click();
+        }
+    });
 }
 
 // Main function to initialize everything
@@ -112,29 +115,24 @@ async function initializeSearch() {
 }
 
 // Toggle visibility for search bars
-searchProfessorsBtn.addEventListener('click', () => {
-    const isActive = !professorsSearchContainer.classList.contains('hidden');
-    professorsSearchContainer.classList.toggle('hidden');
-    labsSearchContainer.classList.add('hidden');
+if (searchProfessorsBtn && searchLabsBtn) {
+    searchProfessorsBtn.addEventListener('click', () => {
+        professorsSearchContainer.classList.toggle('hidden');
+        labsSearchContainer.classList.add('hidden');
+    });
 
-    if (!isActive) {
-        searchProfessorsBtn.classList.add('active');
-        searchLabsBtn.classList.remove('active');
-    } else {
-        searchProfessorsBtn.classList.remove('active');
-    }
-});
+    searchLabsBtn.addEventListener('click', () => {
+        labsSearchContainer.classList.toggle('hidden');
+        professorsSearchContainer.classList.add('hidden');
+    });
+}
 
-searchLabsBtn.addEventListener('click', () => {
-    const isActive = !labsSearchContainer.classList.contains('hidden');
-    labsSearchContainer.classList.toggle('hidden');
-    professorsSearchContainer.classList.add('hidden');
-
-    if (!isActive) {
-        searchLabsBtn.classList.add('active');
-        searchProfessorsBtn.classList.remove('active');
-    } else {
-        searchLabsBtn.classList.remove('active');
+// Hide search containers when clicking outside
+document.addEventListener('click', (event) => {
+    if (!professorsSearchContainer.contains(event.target) && !labsSearchContainer.contains(event.target) &&
+        event.target !== searchProfessorsBtn && event.target !== searchLabsBtn) {
+        professorsSearchContainer.classList.add('hidden');
+        labsSearchContainer.classList.add('hidden');
     }
 });
 
