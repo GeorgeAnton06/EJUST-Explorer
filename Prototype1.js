@@ -158,3 +158,4 @@ document.addEventListener('click', (event) => {
 
 // Call the initialize function when the page loads
 window.addEventListener('DOMContentLoaded', initializeSearch);
+
