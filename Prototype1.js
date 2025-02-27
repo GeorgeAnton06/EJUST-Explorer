@@ -74,7 +74,9 @@ function displayResults(results, resultsContainer) {
     results.forEach(result => {
         const resultDiv = document.createElement('div');
         resultDiv.innerHTML = `
-            <p><strong>Description:** ${result.description || "No description available"}
+            <h3>${result.Prof || result.Name || "Unknown"}</h3>
+            <p><strong>Location:</strong> ${result.Location || result.location || "Unknown"}</p>
+            <p><strong>Description:</strong> ${result.description || "No description available"}</p>
         `;
         resultsContainer.appendChild(resultDiv);
     });
@@ -88,8 +90,8 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
 
     searchButton.addEventListener('click', () => {
         const query = searchInput.value.trim().toLowerCase();
-        const filteredResults = data.filter(item =>
-            (item.Prof && item.Prof.toLowerCase().includes(query)) ||
+        const filteredResults = data.filter(item => 
+            (item.Prof && item.Prof.toLowerCase().includes(query)) || 
             (item.Name && item.Name.toLowerCase().includes(query))
         );
         displayResults(filteredResults, resultsContainer);
@@ -115,34 +117,23 @@ async function initializeSearch() {
 // Toggle visibility for search bars
 if (searchProfessorsBtn && searchLabsBtn) {
     searchProfessorsBtn.addEventListener('click', () => {
-        // Toggle the active state of the professor's search
-        professorsSearchContainer.classList.toggle('hidden');
-
-        // If professor's search is now active, ensure lab search is inactive
-        if (!professorsSearchContainer.classList.contains('hidden')) {
+        // If labs search bar is visible, hide it
+        if (!labsSearchContainer.classList.contains('hidden')) {
             labsSearchContainer.classList.add('hidden');
-            searchLabsBtn.classList.remove('active'); // remove active class from labs button
-            searchProfessorsBtn.classList.add('active'); // add active class to professor button
-        } else {
-            searchProfessorsBtn.classList.remove('active'); // Remove active class if hidden
         }
+        // Toggle professors search bar visibility
+        professorsSearchContainer.classList.toggle('hidden');
     });
 
     searchLabsBtn.addEventListener('click', () => {
-        // Toggle the active state of the lab search
-        labsSearchContainer.classList.toggle('hidden');
-
-        // If lab search is now active, ensure professor search is inactive
-        if (!labsSearchContainer.classList.contains('hidden')) {
+        // If professors search bar is visible, hide it
+        if (!professorsSearchContainer.classList.contains('hidden')) {
             professorsSearchContainer.classList.add('hidden');
-            searchProfessorsBtn.classList.remove('active'); // remove active class from professor button
-            searchLabsBtn.classList.add('active'); // add active class to labs button
-        } else {
-            searchLabsBtn.classList.remove('active'); // Remove active class if hidden
         }
+        // Toggle labs search bar visibility
+        labsSearchContainer.classList.toggle('hidden');
     });
 }
-
 
 // Hide search containers when clicking outside
 document.addEventListener('click', (event) => {
@@ -150,8 +141,6 @@ document.addEventListener('click', (event) => {
         event.target !== searchProfessorsBtn && event.target !== searchLabsBtn) {
         professorsSearchContainer.classList.add('hidden');
         labsSearchContainer.classList.add('hidden');
-        searchProfessorsBtn.classList.remove('active');
-        searchLabsBtn.classList.remove('active');
     }
 });
 
