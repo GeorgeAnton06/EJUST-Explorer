@@ -51,87 +51,16 @@ document.addEventListener("click", (event) => {
     }
 });
 
-// Function to fetch JSON data
-async function fetchJSONData(url) {
-    try {
-        const response = await fetch(url + '?v=' + new Date().getTime());
-        if (!response.ok) throw new Error(`Failed to fetch JSON file: ${response.statusText}`);
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error fetching JSON:', error);
-        return [];
-    }
-}
-
-// Function to display search results
-function displayResults(results, resultsContainer) {
-    resultsContainer.innerHTML = '';
-    if (results.length === 0) {
-        resultsContainer.innerHTML = '<p>No results found.</p>';
-        return;
-    }
-    results.forEach(result => {
-        const resultDiv = document.createElement('div');
-        resultDiv.innerHTML = `
-            <h3>${result.Prof || result.Name || "Unknown"}</h3>
-            <p><strong>Location:</strong> ${result.Location || result.location || "Unknown"}</p>
-            <p><strong>Description:</strong> ${result.description || "No description available"}</p>
-        `;
-        resultsContainer.appendChild(resultDiv);
-    });
-}
-
-// Function to set up search functionality
-function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
-    const searchInput = document.getElementById(searchInputId);
-    const searchButton = document.getElementById(searchButtonId);
-    const resultsContainer = document.getElementById(resultsContainerId);
-
-    searchButton.addEventListener('click', () => {
-        const query = searchInput.value.trim().toLowerCase();
-        const filteredResults = data.filter(item => 
-            (item.Prof && item.Prof.toLowerCase().includes(query)) || 
-            (item.Name && item.Name.toLowerCase().includes(query))
-        );
-        displayResults(filteredResults, resultsContainer);
-    });
-
-    searchInput.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') {
-            searchButton.click();
-        }
-    });
-}
-
-// Main function to initialize everything
-async function initializeSearch() {
-    const professorsData = await fetchJSONData('./doctor_locations.json');
-    const labsData = await fetchJSONData('./labs.json');
-
-    setupSearch('professors-search', 'professors-search-btn', 'professors-results', professorsData);
-    setupSearch('secondary-search', 'secondary-search-btn', 'secondary-results', professorsData);
-    setupSearch('labs-search', 'labs-search-btn', 'labs-results', labsData);
-}
-
 // Toggle visibility for search bars
 if (searchProfessorsBtn && searchLabsBtn) {
     searchProfessorsBtn.addEventListener('click', () => {
-        // If labs search bar is visible, hide it
-        if (!labsSearchContainer.classList.contains('hidden')) {
-            labsSearchContainer.classList.add('hidden');
-        }
-        // Toggle professors search bar visibility
-        professorsSearchContainer.classList.toggle('hidden');
+        professorsSearchContainer.classList.remove('hidden');
+        labsSearchContainer.classList.add('hidden');
     });
 
     searchLabsBtn.addEventListener('click', () => {
-        // If professors search bar is visible, hide it
-        if (!professorsSearchContainer.classList.contains('hidden')) {
-            professorsSearchContainer.classList.add('hidden');
-        }
-        // Toggle labs search bar visibility
-        labsSearchContainer.classList.toggle('hidden');
+        labsSearchContainer.classList.remove('hidden');
+        professorsSearchContainer.classList.add('hidden');
     });
 }
 
@@ -143,6 +72,3 @@ document.addEventListener('click', (event) => {
         labsSearchContainer.classList.add('hidden');
     }
 });
-
-// Call the initialize function when the page loads
-window.addEventListener('DOMContentLoaded', initializeSearch);
