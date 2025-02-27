@@ -83,6 +83,11 @@ button {
 button:hover {
     opacity: 0.65;
 }
+#search-professors-btn.active,
+#search-labs-btn.active {
+    background-color: #cc0000; /* A darker red */
+    color: white;
+}
 
 /* Hide content initially */
 .hidden {
