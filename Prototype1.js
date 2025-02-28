@@ -1,4 +1,5 @@
-/* © 2025 George Anton. All rights reserved. */
+/* Copyright © 2025 George Anton. All Rights Reserved.
+   Authorized use only for Egypt-Japan University of Science and Technology. */
 // Get elements
 const mainCampusBtn = document.getElementById("main-campus-btn");
 const secondaryCampusBtn = document.getElementById("secondary-campus-btn");
