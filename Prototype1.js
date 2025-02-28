@@ -1,3 +1,4 @@
+/* © 2025 George Anton. All rights reserved. */
 // Get elements
 const mainCampusBtn = document.getElementById("main-campus-btn");
 const secondaryCampusBtn = document.getElementById("secondary-campus-btn");
