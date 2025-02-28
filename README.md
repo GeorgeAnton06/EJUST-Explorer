@@ -1,2 +1,1 @@
-
-© 2025 George Anton. All rights reserved.
+Copyright © 2025 George Anton. All Rights Reserved.  
