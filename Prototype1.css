@@ -1,5 +1,6 @@
 /* Copyright © 2025 George Anton. All Rights Reserved.
    Authorized use only for Egypt-Japan University of Science and Technology. */
+
 html, body {
     height: 100%; /* Ensure the body and html take up the full height of the viewport */
     margin: 0;
@@ -7,6 +8,7 @@ html, body {
     display: flex;
     flex-direction: column;
 }
+
 body {
     font-family: Arial, sans-serif;
     text-align: center;
@@ -17,12 +19,14 @@ body {
     display: flex;
     flex-direction: column;
 }
+
 .body-wrapper {
     flex: 1; /* This ensures the content takes up the remaining space */
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 body > *:not(footer) {
     flex: 1;
 }
@@ -33,6 +37,7 @@ body > *:not(footer) {
     gap: 20px;
     margin: 20px 0;
 }
+
 .campus-selection {
     display: flex;
     flex-direction: column; /* Always stack items vertically */
@@ -46,6 +51,7 @@ body > *:not(footer) {
     margin-bottom: 10px; /* Adds some space between the text and buttons */
     width: 100%;
 }
+
 button {
     padding: 12px 20px;
     font-size: 20px;
@@ -56,8 +62,9 @@ button {
     max-width: none; /* Ensure they don't shrink */
     border: none; /* Remove borders */
 }
+
 .button-container {
- display: flex;
+    display: flex;
     flex-direction: column; /* Stack buttons vertically */
     align-items: center;
     width: 100%;
@@ -74,6 +81,7 @@ button {
     border-style: solid;
     color: white;
 }
+
 #main-campus-btn, #secondary-campus-btn {
     width: 95%; /* Make buttons take the full page width */
     max-width: none; /* Ensure they don't shrink */
@@ -82,9 +90,11 @@ button {
     padding: 15px; /* Adjust button height */
     font-size: 20px;
 }
+
 button:hover {
     opacity: 0.65;
 }
+
 #search-professors-btn.active,
 #search-labs-btn.active {
     background-color: #cc0000; /* A darker red */
@@ -122,6 +132,7 @@ button:hover {
     opacity: 1;
     transform: translateY(0);
 }
+
 .search-container {
     display: flex;
     align-items: center;
@@ -135,6 +146,7 @@ button:hover {
     border: 1px solid #ccc;
     border-radius: 5px 0 0 5px;
     width: 300px;
+    max-width: 100%; /* Responsive width */
 }
 
 .search-container button {
@@ -152,26 +164,7 @@ button:hover {
     background-color: #cc0000;
 }
 
-#main-results, #secondary-results {
-    margin-top: 20px;
-    text-align: left;
-    padding: 10px;
-    background-color: #f8f9fa;
-    border-radius: 5px;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-}
-/* Keep existing styles and add only these */
-
-/* Add these styles to Prototype1.css */
-
-/* Add these styles to Prototype1.css */
-
-#professors-search-container, #labs-search-container {
-    margin-top: 20px;
-}
-
+/* Search Results Styling */
 #professors-results, #labs-results, #secondary-results {
     margin-top: 20px;
     text-align: left;
@@ -181,7 +174,29 @@ button:hover {
     width: 80%;
     margin-left: auto;
     margin-right: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.result-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.result-item p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.result-item strong {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Footer Styling */
 footer {
     background-color: #333;
     color: #fff;
@@ -247,4 +262,26 @@ footer {
 .footer-bottom p {
     margin: 5px 0;
     font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    button {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    .search-container input {
+        width: 100%;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-section {
+        text-align: center;
+        margin: 10px 0;
+    }
 }
