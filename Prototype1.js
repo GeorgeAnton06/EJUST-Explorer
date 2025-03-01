@@ -1,5 +1,6 @@
-/* Copyright © 2025 George Anton. All Rights Reserved.
+//* Copyright © 2025 George Anton. All Rights Reserved.
    Authorized use only for Egypt-Japan University of Science and Technology. */
+
 // Get elements
 const mainCampusBtn = document.getElementById("main-campus-btn");
 const secondaryCampusBtn = document.getElementById("secondary-campus-btn");
@@ -68,16 +69,24 @@ async function fetchJSONData(url) {
 
 // Function to display search results
 function displayResults(results, resultsContainer) {
-    resultsContainer.innerHTML = '';
+    resultsContainer.innerHTML = ''; // Clear previous results
+
     if (results.length === 0) {
         resultsContainer.innerHTML = '<p>No results found.</p>';
         return;
     }
+
     results.forEach(result => {
         const resultDiv = document.createElement('div');
+        resultDiv.className = 'result-item'; // Add a class for styling
+
+        // Normalize keys to handle case sensitivity
+        const location = result.Location || result.location || "Unknown";
+        const description = result.description || "No description available";
+
         resultDiv.innerHTML = `
-            <p><strong>Location:** ${result.Location || result.location || "Unknown"}
-            <p><strong>Description:** ${result.description || "No description available"}
+            <p><strong>Location:</strong> ${location}</p>
+            <p><strong>Description:</strong> ${description}</p>
         `;
         resultsContainer.appendChild(resultDiv);
     });
@@ -91,11 +100,16 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
 
     searchButton.addEventListener('click', () => {
         const query = searchInput.value.trim().toLowerCase();
-        const filteredResults = data.filter(item =>
-            (item.Prof && item.Prof.toLowerCase().includes(query)) ||
-            (item.Name && item.Name.toLowerCase().includes(query))
-        );
-        displayResults(filteredResults, resultsContainer);
+        if (query.length > 0) {
+            const filteredResults = data.filter(item =>
+                (item.Prof && item.Prof.toLowerCase().includes(query)) ||
+                (item.Name && item.Name.toLowerCase().includes(query)) ||
+                (item.Location && item.Location.toLowerCase().includes(query))
+            );
+            displayResults(filteredResults, resultsContainer);
+        } else {
+            resultsContainer.innerHTML = '<p>Please enter a search term.</p>';
+        }
     });
 
     searchInput.addEventListener('keypress', (event) => {
@@ -105,52 +119,34 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
     });
 }
 
-// Main function to initialize everything
-async function initializeSearch() {
-    const professorsData = await fetchJSONData('./doctor_locations.json');
-    const labsData = await fetchJSONData('./labs.json');
-
-    setupSearch('professors-search', 'professors-search-btn', 'professors-results', professorsData);
-    setupSearch('secondary-search', 'secondary-search-btn', 'secondary-results', professorsData);
-    setupSearch('labs-search', 'labs-search-btn', 'labs-results', labsData);
-}
-
 // Toggle visibility for search bars
 if (searchProfessorsBtn && searchLabsBtn) {
     searchProfessorsBtn.addEventListener('click', () => {
-        // Toggle the active state of the professor's search
-        professorsSearchContainer.classList.toggle('hidden');
+        // Show professor search bar and hide lab search bar
+        professorsSearchContainer.classList.remove('hidden');
+        labsSearchContainer.classList.add('hidden');
 
-        // If professor's search is now active, ensure lab search is inactive
-        if (!professorsSearchContainer.classList.contains('hidden')) {
-            labsSearchContainer.classList.add('hidden');
-            searchLabsBtn.classList.remove('active'); // remove active class from labs button
-            searchProfessorsBtn.classList.add('active'); // add active class to professor button
-        } else {
-            searchProfessorsBtn.classList.remove('active'); // Remove active class if hidden
-        }
+        // Update button states
+        searchProfessorsBtn.classList.add('active');
+        searchLabsBtn.classList.remove('active');
     });
 
     searchLabsBtn.addEventListener('click', () => {
-        // Toggle the active state of the lab search
-        labsSearchContainer.classList.toggle('hidden');
+        // Show lab search bar and hide professor search bar
+        labsSearchContainer.classList.remove('hidden');
+        professorsSearchContainer.classList.add('hidden');
 
-        // If lab search is now active, ensure professor search is inactive
-        if (!labsSearchContainer.classList.contains('hidden')) {
-            professorsSearchContainer.classList.add('hidden');
-            searchProfessorsBtn.classList.remove('active'); // remove active class from professor button
-            searchLabsBtn.classList.add('active'); // add active class to labs button
-        } else {
-            searchLabsBtn.classList.remove('active'); // Remove active class if hidden
-        }
+        // Update button states
+        searchLabsBtn.classList.add('active');
+        searchProfessorsBtn.classList.remove('active');
     });
 }
-
 
 // Hide search containers when clicking outside
 document.addEventListener('click', (event) => {
     if (!professorsSearchContainer.contains(event.target) && !labsSearchContainer.contains(event.target) &&
         event.target !== searchProfessorsBtn && event.target !== searchLabsBtn) {
+        // Hide both search bars and reset button states
         professorsSearchContainer.classList.add('hidden');
         labsSearchContainer.classList.add('hidden');
         searchProfessorsBtn.classList.remove('active');
@@ -158,6 +154,19 @@ document.addEventListener('click', (event) => {
     }
 });
 
+// Main function to initialize everything
+async function initializeSearch() {
+    const professorsData = await fetchJSONData('/NavEJUST/doctor_locations.json');
+    const labsData = await fetchJSONData('/NavEJUST/labs.json');
+
+    if (professorsData.length === 0 || labsData.length === 0) {
+        alert("Failed to load data. Please try again later.");
+    }
+
+    setupSearch('professors-search', 'professors-search-btn', 'professors-results', professorsData);
+    setupSearch('secondary-search', 'secondary-search-btn', 'secondary-results', professorsData);
+    setupSearch('labs-search', 'labs-search-btn', 'labs-results', labsData);
+}
+
 // Call the initialize function when the page loads
 window.addEventListener('DOMContentLoaded', initializeSearch);
-
