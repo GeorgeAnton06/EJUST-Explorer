@@ -176,7 +176,42 @@ button:hover {
     margin-right: auto;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+/* Hide results containers initially */
+#professors-results, #labs-results {
+    margin-top: 20px;
+    text-align: left;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: none; /* Hidden by default */
+}
 
+#professors-results.hidden, #labs-results.hidden {
+    display: none;
+}
+
+.result-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.result-item p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.result-item strong {
+    font-weight: bold;
+    color: #333;
+}
 .result-item {
     margin-bottom: 10px;
     padding: 10px;
