@@ -121,44 +121,27 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
     });
 }
 
-// Toggle visibility for search bars
-function toggleSearchBar(showBar, hideBar, activeButton, inactiveButton) {
-    // Ensure only one search bar is visible at a time
-    if (!showBar.classList.contains("hidden")) return; // Prevent redundant calls
-
+// Function to toggle search bars
+function toggleSearchBar(showBar, hideBar) {
     // Hide the other search bar
     hideBar.classList.add("hidden");
     hideBar.classList.remove("show");
-    inactiveButton.classList.remove("active");
 
     // Show the selected search bar
     showBar.classList.remove("hidden");
     setTimeout(() => {
         showBar.classList.add("show");
     }, 10);
-
-    // Update button states
-    activeButton.classList.add("active");
 }
 
 // Event listeners for search buttons
 if (searchProfessorsBtn && searchLabsBtn) {
     searchProfessorsBtn.addEventListener('click', () => {
-        toggleSearchBar(
-            professorsSearchContainer,
-            labsSearchContainer,
-            searchProfessorsBtn,
-            searchLabsBtn
-        );
+        toggleSearchBar(professorsSearchContainer, labsSearchContainer);
     });
 
     searchLabsBtn.addEventListener('click', () => {
-        toggleSearchBar(
-            labsSearchContainer,
-            professorsSearchContainer,
-            searchLabsBtn,
-            searchProfessorsBtn
-        );
+        toggleSearchBar(labsSearchContainer, professorsSearchContainer);
     });
 }
 
@@ -166,14 +149,11 @@ if (searchProfessorsBtn && searchLabsBtn) {
 document.addEventListener('click', (event) => {
     if (!professorsSearchContainer.contains(event.target) && !labsSearchContainer.contains(event.target) &&
         event.target !== searchProfessorsBtn && event.target !== searchLabsBtn) {
-        // Hide both search bars and reset button states
+        // Hide both search bars
         professorsSearchContainer.classList.add("hidden");
         labsSearchContainer.classList.add("hidden");
         professorsSearchContainer.classList.remove("show");
         labsSearchContainer.classList.remove("show");
-
-        searchProfessorsBtn.classList.remove("active");
-        searchLabsBtn.classList.remove("active");
     }
 });
 
