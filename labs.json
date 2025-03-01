@@ -1,1 +1,22 @@
-[{"Name":"chemistry lab","location":"COE G13","description":"Tokyo tech lab"},{"Name":"physics lab","location":"COE F1 06","description":"Main physics lab"},{"Name":"Nanotecchnology lab","location":"B8 F1 04","description":"main nanotechnology lab"},{"Name":"manufacturing lab","location":"COE G14","description":"main manufacturing lab"}]
+[
+    {
+        "Name": "Chemistry Lab",
+        "Location": "COE G13",
+        "description": "Tokyo Tech lab"
+    },
+    {
+        "Name": "Physics Lab",
+        "Location": "COE F1 06",
+        "description": "Main physics lab"
+    },
+    {
+        "Name": "Nanotechnology Lab",
+        "Location": "B8 F1 04",
+        "description": "Main nanotechnology lab"
+    },
+    {
+        "Name": "Manufacturing Lab",
+        "Location": "COE G14",
+        "description": "Main manufacturing lab"
+    }
+]
