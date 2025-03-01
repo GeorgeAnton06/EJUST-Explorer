@@ -2,7 +2,7 @@
     {
         "Prof": "Haitham",
         "Location": "B8 F1 06",
-        "description": "Logic professor"
+        "description": "logic professor"
     },
     {
         "Prof": "Ahmed",
@@ -17,21 +17,21 @@
     {
         "Prof": "Wegdan",
         "Location": "B8 F2 14",
-        "description": "Physics professor"
+        "description": "Physics Professor"
     },
     {
         "Prof": "Hirano",
         "Location": "COE F1 03",
-        "description": "Japanese tutor"
+        "description": "Japanese Tutor"
     },
     {
         "Prof": "Aro",
         "Location": "B18 F1 20",
-        "description": "Japanese tutor"
+        "description": "Japanese Tutor"
     },
     {
         "Prof": "Ibrahim",
         "Location": "B10 F2 24",
-        "description": "Engineering drawing professor"
+        "description": "Engineering Drawing professor"
     }
 ]
