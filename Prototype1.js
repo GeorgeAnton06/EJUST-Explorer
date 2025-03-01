@@ -1,25 +1,28 @@
 /* Copyright © 2025 George Anton. All Rights Reserved.
    Authorized use only for Egypt-Japan University of Science and Technology. */
+
 // Get elements
 const mainCampusBtn = document.getElementById("main-campus-btn");
 const secondaryCampusBtn = document.getElementById("secondary-campus-btn");
 const mainCampusContent = document.getElementById("main-campus-content");
 const secondaryCampusContent = document.getElementById("secondary-campus-content");
+
 const searchProfessorsBtn = document.getElementById("search-professors-btn");
 const searchLabsBtn = document.getElementById("search-labs-btn");
+
 const professorsSearchContainer = document.getElementById("professors-search-container");
 const labsSearchContainer = document.getElementById("labs-search-container");
+
 const professorsResults = document.getElementById("professors-results");
 const labsResults = document.getElementById("labs-results");
+
 // Function to toggle campus content
 function toggleCampusContent(showContent, hideContent) {
-    // Hide the other campus content with a transition
     hideContent.classList.remove("show");
     setTimeout(() => {
         hideContent.classList.add("hidden");
-    }, 500); // Match the transition duration
+    }, 500);
 
-    // Show the selected campus content with a transition
     showContent.classList.remove("hidden");
     setTimeout(() => {
         showContent.classList.add("show");
@@ -36,23 +39,6 @@ if (mainCampusBtn && secondaryCampusBtn) {
         toggleCampusContent(secondaryCampusContent, mainCampusContent);
     });
 }
-
-// Function to hide campus content with a transition
-function hideCampusContent(content) {
-    content.classList.remove("show");
-    setTimeout(() => {
-        content.classList.add("hidden");
-    }, 500); // Match the transition duration
-}
-
-// Hide content when clicking outside
-document.addEventListener("click", (event) => {
-    if (!mainCampusContent.contains(event.target) && !secondaryCampusContent.contains(event.target) &&
-        event.target !== mainCampusBtn && event.target !== secondaryCampusBtn) {
-        hideCampusContent(mainCampusContent);
-        hideCampusContent(secondaryCampusContent);
-    }
-});
 
 // Function to fetch JSON data
 async function fetchJSONData(url) {
@@ -73,13 +59,12 @@ function displayResults(results, resultsContainer) {
 
     if (results.length === 0) {
         resultsContainer.innerHTML = '<p>No results found.</p>';
-        resultsContainer.classList.add("hidden"); // Hide the container if no results
+        resultsContainer.classList.add("hidden"); // Hide if no results
     } else {
         results.forEach(result => {
             const resultDiv = document.createElement('div');
-            resultDiv.className = 'result-item'; // Add a class for styling
+            resultDiv.className = 'result-item';
 
-            // Normalize keys to handle case sensitivity
             const location = result.Location || result.location || "Unknown";
             const description = result.description || "No description available";
 
@@ -89,7 +74,7 @@ function displayResults(results, resultsContainer) {
             `;
             resultsContainer.appendChild(resultDiv);
         });
-        resultsContainer.classList.remove("hidden"); // Show the container if results exist
+        resultsContainer.classList.remove("hidden"); // Show if results exist
     }
 }
 
@@ -110,7 +95,7 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
             displayResults(filteredResults, resultsContainer);
         } else {
             resultsContainer.innerHTML = '';
-            resultsContainer.classList.add("hidden"); // Hide the container if no input
+            resultsContainer.classList.add("hidden"); // Hide if no input
         }
     });
 
@@ -123,11 +108,9 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
 
 // Function to toggle search bars
 function toggleSearchBar(showBar, hideBar) {
-    // Hide the other search bar
     hideBar.classList.add("hidden");
     hideBar.classList.remove("show");
 
-    // Show the selected search bar
     showBar.classList.remove("hidden");
     setTimeout(() => {
         showBar.classList.add("show");
@@ -138,12 +121,12 @@ function toggleSearchBar(showBar, hideBar) {
 if (searchProfessorsBtn && searchLabsBtn) {
     searchProfessorsBtn.addEventListener('click', () => {
         toggleSearchBar(professorsSearchContainer, labsSearchContainer);
-        professorsResults.classList.add("hidden"); // Reset results container
+        professorsResults.classList.add("hidden"); // Reset results
     });
 
     searchLabsBtn.addEventListener('click', () => {
         toggleSearchBar(labsSearchContainer, professorsSearchContainer);
-        labsResults.classList.add("hidden"); // Reset results container
+        labsResults.classList.add("hidden"); // Reset results
     });
 }
 
@@ -151,13 +134,8 @@ if (searchProfessorsBtn && searchLabsBtn) {
 document.addEventListener('click', (event) => {
     if (!professorsSearchContainer.contains(event.target) && !labsSearchContainer.contains(event.target) &&
         event.target !== searchProfessorsBtn && event.target !== searchLabsBtn) {
-        // Hide both search bars
         professorsSearchContainer.classList.add("hidden");
         labsSearchContainer.classList.add("hidden");
-        professorsSearchContainer.classList.remove("show");
-        labsSearchContainer.classList.remove("show");
-
-        // Reset results containers
         professorsResults.classList.add("hidden");
         labsResults.classList.add("hidden");
     }
@@ -165,15 +143,14 @@ document.addEventListener('click', (event) => {
 
 // Main function to initialize everything
 async function initializeSearch() {
-    const professorsData = await fetchJSONData('./doctor_locations.json'); // Direct path
-    const labsData = await fetchJSONData('./labs.json'); // Direct path
+    const professorsData = await fetchJSONData('./doctor_locations.json');
+    const labsData = await fetchJSONData('./labs.json');
 
     if (professorsData.length === 0 || labsData.length === 0) {
         alert("Failed to load data. Please try again later.");
     }
 
     setupSearch('professors-search', 'professors-search-btn', 'professors-results', professorsData);
-    setupSearch('secondary-search', 'secondary-search-btn', 'secondary-results', professorsData);
     setupSearch('labs-search', 'labs-search-btn', 'labs-results', labsData);
 }
 
