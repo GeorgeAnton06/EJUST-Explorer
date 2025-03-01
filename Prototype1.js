@@ -1,21 +1,16 @@
 /* Copyright © 2025 George Anton. All Rights Reserved.
    Authorized use only for Egypt-Japan University of Science and Technology. */
-
 // Get elements
 const mainCampusBtn = document.getElementById("main-campus-btn");
 const secondaryCampusBtn = document.getElementById("secondary-campus-btn");
 const mainCampusContent = document.getElementById("main-campus-content");
 const secondaryCampusContent = document.getElementById("secondary-campus-content");
-
 const searchProfessorsBtn = document.getElementById("search-professors-btn");
 const searchLabsBtn = document.getElementById("search-labs-btn");
-
 const professorsSearchContainer = document.getElementById("professors-search-container");
 const labsSearchContainer = document.getElementById("labs-search-container");
-
 const professorsResults = document.getElementById("professors-results");
 const labsResults = document.getElementById("labs-results");
-
 // Function to toggle campus content
 function toggleCampusContent(showContent, hideContent) {
     // Hide the other campus content with a transition
