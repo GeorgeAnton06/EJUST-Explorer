@@ -11,38 +11,27 @@ const searchLabsBtn = document.getElementById("search-labs-btn");
 const professorsSearchContainer = document.getElementById("professors-search-container");
 const labsSearchContainer = document.getElementById("labs-search-container");
 
-// Function to show campus content
-function showCampusContent(showContent, hideContent) {
-    hideContent.classList.remove("show"); // Remove the 'show' class from the hidden content
-    setTimeout(() => {
-        hideContent.classList.add("hidden"); // Add the 'hidden' class to hide it
-        showContent.classList.remove("hidden"); // Remove the 'hidden' class from the visible content
-        setTimeout(() => {
-            showContent.classList.add("show"); // Add the 'show' class for animations
-        }, 10); // Small delay for smoother transitions
-    }, 500); // Animation duration
-}
+// Function to toggle campus content
+function toggleCampusContent(showContent, hideContent) {
+    // Hide the other campus content
+    hideContent.classList.add("hidden");
+    hideContent.classList.remove("show");
 
-// Function to hide both contents
-function hideCampusContent() {
-    mainCampusContent.classList.remove("show");
-    secondaryCampusContent.classList.remove("show");
+    // Show the selected campus content
+    showContent.classList.remove("hidden");
     setTimeout(() => {
-        mainCampusContent.classList.add("hidden");
-        secondaryCampusContent.classList.add("hidden");
-    }, 500); // Animation duration
+        showContent.classList.add("show");
+    }, 10); // Small delay for smoother transitions
 }
 
 // Event listeners for campus buttons
 if (mainCampusBtn && secondaryCampusBtn) {
-    mainCampusBtn.addEventListener("click", (event) => {
-        showCampusContent(mainCampusContent, secondaryCampusContent);
-        event.stopPropagation(); // Prevent event bubbling
+    mainCampusBtn.addEventListener("click", () => {
+        toggleCampusContent(mainCampusContent, secondaryCampusContent);
     });
 
-    secondaryCampusBtn.addEventListener("click", (event) => {
-        showCampusContent(secondaryCampusContent, mainCampusContent);
-        event.stopPropagation(); // Prevent event bubbling
+    secondaryCampusBtn.addEventListener("click", () => {
+        toggleCampusContent(secondaryCampusContent, mainCampusContent);
     });
 }
 
@@ -50,7 +39,10 @@ if (mainCampusBtn && secondaryCampusBtn) {
 document.addEventListener("click", (event) => {
     if (!mainCampusContent.contains(event.target) && !secondaryCampusContent.contains(event.target) &&
         event.target !== mainCampusBtn && event.target !== secondaryCampusBtn) {
-        hideCampusContent();
+        mainCampusContent.classList.add("hidden");
+        secondaryCampusContent.classList.add("hidden");
+        mainCampusContent.classList.remove("show");
+        secondaryCampusContent.classList.remove("show");
     }
 });
 
@@ -156,8 +148,8 @@ document.addEventListener('click', (event) => {
 
 // Main function to initialize everything
 async function initializeSearch() {
-    const professorsData = await fetchJSONData('/NavEJUST/doctor_locations.json');
-    const labsData = await fetchJSONData('/NavEJUST/labs.json');
+    const professorsData = await fetchJSONData('./doctor_locations.json'); // Direct path
+    const labsData = await fetchJSONData('./labs.json'); // Direct path
 
     if (professorsData.length === 0 || labsData.length === 0) {
         alert("Failed to load data. Please try again later.");
