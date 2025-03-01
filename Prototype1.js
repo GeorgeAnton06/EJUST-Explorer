@@ -123,8 +123,12 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
 
 // Toggle visibility for search bars
 function toggleSearchBar(showBar, hideBar, activeButton, inactiveButton) {
+    // Ensure only one search bar is visible at a time
+    if (!showBar.classList.contains("hidden")) return; // Prevent redundant calls
+
     // Hide the other search bar
     hideBar.classList.add("hidden");
+    hideBar.classList.remove("show");
     inactiveButton.classList.remove("active");
 
     // Show the selected search bar
