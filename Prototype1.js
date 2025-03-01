@@ -1,4 +1,4 @@
-//* Copyright © 2025 George Anton. All Rights Reserved.
+/* Copyright © 2025 George Anton. All Rights Reserved.
    Authorized use only for Egypt-Japan University of Science and Technology. */
 
 // Get elements
@@ -13,14 +13,14 @@ const labsSearchContainer = document.getElementById("labs-search-container");
 
 // Function to show campus content
 function showCampusContent(showContent, hideContent) {
-    hideContent.classList.remove("show");
+    hideContent.classList.remove("show"); // Remove the 'show' class from the hidden content
     setTimeout(() => {
-        hideContent.classList.add("hidden");
-        showContent.classList.remove("hidden");
+        hideContent.classList.add("hidden"); // Add the 'hidden' class to hide it
+        showContent.classList.remove("hidden"); // Remove the 'hidden' class from the visible content
         setTimeout(() => {
-            showContent.classList.add("show");
-        }, 10);
-    }, 500);
+            showContent.classList.add("show"); // Add the 'show' class for animations
+        }, 10); // Small delay for smoother transitions
+    }, 500); // Animation duration
 }
 
 // Function to hide both contents
@@ -30,19 +30,19 @@ function hideCampusContent() {
     setTimeout(() => {
         mainCampusContent.classList.add("hidden");
         secondaryCampusContent.classList.add("hidden");
-    }, 500);
+    }, 500); // Animation duration
 }
 
 // Event listeners for campus buttons
 if (mainCampusBtn && secondaryCampusBtn) {
     mainCampusBtn.addEventListener("click", (event) => {
         showCampusContent(mainCampusContent, secondaryCampusContent);
-        event.stopPropagation();
+        event.stopPropagation(); // Prevent event bubbling
     });
 
     secondaryCampusBtn.addEventListener("click", (event) => {
         showCampusContent(secondaryCampusContent, mainCampusContent);
-        event.stopPropagation();
+        event.stopPropagation(); // Prevent event bubbling
     });
 }
 
