@@ -13,6 +13,9 @@ const searchLabsBtn = document.getElementById("search-labs-btn");
 const professorsSearchContainer = document.getElementById("professors-search-container");
 const labsSearchContainer = document.getElementById("labs-search-container");
 
+const professorsResults = document.getElementById("professors-results");
+const labsResults = document.getElementById("labs-results");
+
 // Function to toggle campus content
 function toggleCampusContent(showContent, hideContent) {
     // Hide the other campus content with a transition
@@ -75,23 +78,24 @@ function displayResults(results, resultsContainer) {
 
     if (results.length === 0) {
         resultsContainer.innerHTML = '<p>No results found.</p>';
-        return;
+        resultsContainer.classList.add("hidden"); // Hide the container if no results
+    } else {
+        results.forEach(result => {
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'result-item'; // Add a class for styling
+
+            // Normalize keys to handle case sensitivity
+            const location = result.Location || result.location || "Unknown";
+            const description = result.description || "No description available";
+
+            resultDiv.innerHTML = `
+                <p><strong>Location:</strong> ${location}</p>
+                <p><strong>Description:</strong> ${description}</p>
+            `;
+            resultsContainer.appendChild(resultDiv);
+        });
+        resultsContainer.classList.remove("hidden"); // Show the container if results exist
     }
-
-    results.forEach(result => {
-        const resultDiv = document.createElement('div');
-        resultDiv.className = 'result-item'; // Add a class for styling
-
-        // Normalize keys to handle case sensitivity
-        const location = result.Location || result.location || "Unknown";
-        const description = result.description || "No description available";
-
-        resultDiv.innerHTML = `
-            <p><strong>Location:</strong> ${location}</p>
-            <p><strong>Description:</strong> ${description}</p>
-        `;
-        resultsContainer.appendChild(resultDiv);
-    });
 }
 
 // Function to set up search functionality
@@ -110,7 +114,8 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
             );
             displayResults(filteredResults, resultsContainer);
         } else {
-            resultsContainer.innerHTML = '<p>Please enter a search term.</p>';
+            resultsContainer.innerHTML = '';
+            resultsContainer.classList.add("hidden"); // Hide the container if no input
         }
     });
 
@@ -138,10 +143,12 @@ function toggleSearchBar(showBar, hideBar) {
 if (searchProfessorsBtn && searchLabsBtn) {
     searchProfessorsBtn.addEventListener('click', () => {
         toggleSearchBar(professorsSearchContainer, labsSearchContainer);
+        professorsResults.classList.add("hidden"); // Reset results container
     });
 
     searchLabsBtn.addEventListener('click', () => {
         toggleSearchBar(labsSearchContainer, professorsSearchContainer);
+        labsResults.classList.add("hidden"); // Reset results container
     });
 }
 
@@ -154,6 +161,10 @@ document.addEventListener('click', (event) => {
         labsSearchContainer.classList.add("hidden");
         professorsSearchContainer.classList.remove("show");
         labsSearchContainer.classList.remove("show");
+
+        // Reset results containers
+        professorsResults.classList.add("hidden");
+        labsResults.classList.add("hidden");
     }
 });
 
