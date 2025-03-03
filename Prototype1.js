@@ -141,23 +141,42 @@ async function initializeSearch() {
     setupSearch('labs-search', 'labs-search-btn', 'labs-results', labsData);
 }
 
-// Toggle visibility for search bars
+// Toggle function that ensures only one search container is visible at a time
+function toggleSearchContainer(showContainer, hideContainer) {
+    // If the container to show is already visible, hide it (toggle behavior)
+    if (!showContainer.classList.contains('hidden')) {
+        showContainer.classList.add('hidden');
+    } else {
+        // Hide the other container
+        hideContainer.classList.add('hidden');
+        // Show this container
+        showContainer.classList.remove('hidden');
+        // Focus the input field for better UX
+        showContainer.querySelector('input').focus();
+    }
+}
+
+// Event listeners for search buttons
 if (searchProfessorsBtn && searchLabsBtn) {
     searchProfessorsBtn.addEventListener('click', () => {
-        professorsSearchContainer.classList.toggle('hidden');
-        labsSearchContainer.classList.add('hidden');
+        toggleSearchContainer(professorsSearchContainer, labsSearchContainer);
     });
 
     searchLabsBtn.addEventListener('click', () => {
-        labsSearchContainer.classList.toggle('hidden');
-        professorsSearchContainer.classList.add('hidden');
+        toggleSearchContainer(labsSearchContainer, professorsSearchContainer);
     });
 }
 
 // Hide search containers when clicking outside
 document.addEventListener('click', (event) => {
-    if (!professorsSearchContainer.contains(event.target) && !labsSearchContainer.contains(event.target) &&
-        event.target !== searchProfessorsBtn && event.target !== searchLabsBtn) {
+    const isClickInsideProfessors = professorsSearchContainer.contains(event.target);
+    const isClickInsideLabs = labsSearchContainer.contains(event.target);
+    const isClickOnProfBtn = event.target === searchProfessorsBtn;
+    const isClickOnLabBtn = event.target === searchLabsBtn;
+    
+    // If click is outside of both containers and not on either button, hide both
+    if (!isClickInsideProfessors && !isClickInsideLabs && 
+        !isClickOnProfBtn && !isClickOnLabBtn) {
         professorsSearchContainer.classList.add('hidden');
         labsSearchContainer.classList.add('hidden');
     }
