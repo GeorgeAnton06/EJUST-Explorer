@@ -141,3 +141,99 @@ document.addEventListener('click', (event) => {
 
 // Call the initialize function when the page loads
 window.addEventListener('DOMContentLoaded', initializeSearch);
+
+// Add this to your Prototype1.js file
+
+// Map initialization functions
+let mainCampusMap, secondaryCampusMap;
+
+function initializeMaps() {
+    // Initialize Main Campus Map
+    mainCampusMap = L.map('main-campus-map').setView([31.2001, 29.9187], 16); // Coordinates for EJUST main campus
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(mainCampusMap);
+
+    // Initialize Secondary Campus Map
+    secondaryCampusMap = L.map('secondary-campus-map').setView([31.2001, 29.9187], 16); // Update with correct secondary campus coordinates
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(secondaryCampusMap);
+
+    // Adjust maps when content is shown
+    mainCampusBtn.addEventListener("click", () => {
+        setTimeout(() => {
+            mainCampusMap.invalidateSize();
+        }, 600);
+    });
+
+    secondaryCampusBtn.addEventListener("click", () => {
+        setTimeout(() => {
+            secondaryCampusMap.invalidateSize();
+        }, 600);
+    });
+}
+
+// Function to add markers for professors and labs
+function addMarkersToMap(data, map, type) {
+    data.forEach(item => {
+        const name = item.Prof || item.Name || "Unknown";
+        const location = item.Location || item.location || "Unknown";
+        const description = item.description || "No description available";
+        
+        // Create a marker
+        const marker = L.marker([0, 0]).addTo(map); // Placeholder coordinates
+        
+        // You'll need to convert building/room codes to actual coordinates
+        // This is a simplified example - you would need actual coordinate mapping
+        updateMarkerPosition(marker, location);
+        
+        // Add popup with information
+        marker.bindPopup(`<b>${name}</b><br>${location}<br>${description}`);
+    });
+}
+
+// This function would need actual mapping data for your campus
+function updateMarkerPosition(marker, locationCode) {
+    // This is where you would convert location codes like "B8 F1 06" to actual coordinates
+    // For now, we'll use random offsets for demonstration
+    const baseCoords = [31.2001, 29.9187]; // Base coordinates for EJUST
+    
+    // Extract building number if possible
+    let buildingNum = 0;
+    if (locationCode.startsWith('B')) {
+        buildingNum = parseInt(locationCode.match(/B(\d+)/)?.[1] || 0);
+    }
+    
+    // Create a deterministic but different position based on location code
+    // This is just for demonstration - you would need actual mapping data
+    const lat = baseCoords[0] + (buildingNum * 0.0002);
+    const lng = baseCoords[1] + (locationCode.length * 0.0001);
+    
+    marker.setLatLng([lat, lng]);
+}
+
+// Modified initialize function
+async function initializeApplication() {
+    const professorsData = await fetchJSONData('./doctor_locations.json');
+    const labsData = await fetchJSONData('./labs.json');
+
+    setupSearch('professors-search', 'professors-search-btn', 'professors-results', professorsData);
+    setupSearch('secondary-search', 'secondary-search-btn', 'secondary-results', professorsData);
+    setupSearch('labs-search', 'labs-search-btn', 'labs-results', labsData);
+    
+    initializeMaps();
+    
+    // Add markers to maps
+    if (professorsData.length > 0) {
+        addMarkersToMap(professorsData, mainCampusMap, 'professor');
+        addMarkersToMap(professorsData, secondaryCampusMap, 'professor');
+    }
+    
+    if (labsData.length > 0) {
+        addMarkersToMap(labsData, mainCampusMap, 'lab');
+    }
+}
+
+// Replace the old initialization
+window.addEventListener('DOMContentLoaded', initializeApplication);
