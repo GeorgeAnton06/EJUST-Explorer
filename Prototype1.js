@@ -55,14 +55,38 @@ document.addEventListener("click", (event) => {
 });
 
 // Function to fetch JSON data
+// Function to fetch JSON data with better error handling
 async function fetchJSONData(url) {
     try {
+        // Show loading indicator in results containers
+        document.getElementById('professors-results').innerHTML = '<div class="loading"></div>';
+        document.getElementById('labs-results').innerHTML = '<div class="loading"></div>';
+        document.getElementById('secondary-results').innerHTML = '<div class="loading"></div>';
+        
         const response = await fetch(url + '?v=' + new Date().getTime());
-        if (!response.ok) throw new Error(`Failed to fetch JSON file: ${response.statusText}`);
+        
+        if (!response.ok) {
+            throw new Error(`Failed to fetch JSON file: ${response.statusText}`);
+        }
+        
         const data = await response.json();
         return data;
     } catch (error) {
         console.error('Error fetching JSON:', error);
+        
+        // Display a user-friendly error message
+        const errorMessage = `
+            <div class="error-message">
+                <h3>Unable to load data</h3>
+                <p>There was an error loading the data. Please try again later.</p>
+                <p>Details: ${error.message}</p>
+            </div>
+        `;
+        
+        document.getElementById('professors-results').innerHTML = errorMessage;
+        document.getElementById('labs-results').innerHTML = errorMessage;
+        document.getElementById('secondary-results').innerHTML = errorMessage;
+        
         return [];
     }
 }
