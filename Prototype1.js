@@ -130,40 +130,44 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
     });
 }
 
-// Modify initialization to handle initial state of search containers
-window.addEventListener('DOMContentLoaded', () => {
-    // Initially hide search containers
+// Function to hide all search containers
+function hideAllSearchContainers() {
     professorsSearchContainer.classList.add('hidden');
     labsSearchContainer.classList.add('hidden');
+}
+
+// Initial setup to hide search containers on page load
+window.addEventListener('DOMContentLoaded', hideAllSearchContainers);
+
+// Event listener for professors search button
+searchProfessorsBtn.addEventListener('click', (event) => {
+    event.stopPropagation(); // Prevent event bubbling
+    
+    // If professors search container is already visible, hide it
+    if (!professorsSearchContainer.classList.contains('hidden')) {
+        professorsSearchContainer.classList.add('hidden');
+    } else {
+        // Hide labs search container first
+        labsSearchContainer.classList.add('hidden');
+        // Show professors search container
+        professorsSearchContainer.classList.remove('hidden');
+    }
 });
 
-// Toggle function that ensures only one search container is visible at a time
-function toggleSearchContainer(showContainer, hideContainer) {
-    // If the container to show is already visible, hide it (toggle behavior)
-    if (!showContainer.classList.contains('hidden')) {
-        showContainer.classList.add('hidden');
+// Event listener for labs search button
+searchLabsBtn.addEventListener('click', (event) => {
+    event.stopPropagation(); // Prevent event bubbling
+    
+    // If labs search container is already visible, hide it
+    if (!labsSearchContainer.classList.contains('hidden')) {
+        labsSearchContainer.classList.add('hidden');
     } else {
-        // Hide the other container
-        hideContainer.classList.add('hidden');
-        // Show this container
-        showContainer.classList.remove('hidden');
-        // Focus the input field for better UX
-        showContainer.querySelector('input').focus();
+        // Hide professors search container first
+        professorsSearchContainer.classList.add('hidden');
+        // Show labs search container
+        labsSearchContainer.classList.remove('hidden');
     }
-}
-
-// Event listeners for search buttons
-if (searchProfessorsBtn && searchLabsBtn) {
-    searchProfessorsBtn.addEventListener('click', (event) => {
-        event.stopPropagation(); // Prevent event from bubbling
-        toggleSearchContainer(professorsSearchContainer, labsSearchContainer);
-    });
-
-    searchLabsBtn.addEventListener('click', (event) => {
-        event.stopPropagation(); // Prevent event from bubbling
-        toggleSearchContainer(labsSearchContainer, professorsSearchContainer);
-    });
-}
+});
 
 // Hide search containers when clicking outside
 document.addEventListener('click', (event) => {
@@ -175,8 +179,7 @@ document.addEventListener('click', (event) => {
     // If click is outside of both containers and not on either button, hide both
     if (!isClickInsideProfessors && !isClickInsideLabs && 
         !isClickOnProfBtn && !isClickOnLabBtn) {
-        professorsSearchContainer.classList.add('hidden');
-        labsSearchContainer.classList.add('hidden');
+        hideAllSearchContainers();
     }
 });
 
