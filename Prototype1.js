@@ -54,7 +54,6 @@ document.addEventListener("click", (event) => {
     }
 });
 
-// Function to fetch JSON data
 // Function to fetch JSON data with better error handling
 async function fetchJSONData(url) {
     try {
@@ -131,15 +130,12 @@ function setupSearch(searchInputId, searchButtonId, resultsContainerId, data) {
     });
 }
 
-// Main function to initialize everything
-async function initializeSearch() {
-    const professorsData = await fetchJSONData('./doctor_locations.json');
-    const labsData = await fetchJSONData('./labs.json');
-
-    setupSearch('professors-search', 'professors-search-btn', 'professors-results', professorsData);
-    setupSearch('secondary-search', 'secondary-search-btn', 'secondary-results', professorsData);
-    setupSearch('labs-search', 'labs-search-btn', 'labs-results', labsData);
-}
+// Modify initialization to handle initial state of search containers
+window.addEventListener('DOMContentLoaded', () => {
+    // Initially hide search containers
+    professorsSearchContainer.classList.add('hidden');
+    labsSearchContainer.classList.add('hidden');
+});
 
 // Toggle function that ensures only one search container is visible at a time
 function toggleSearchContainer(showContainer, hideContainer) {
@@ -158,11 +154,13 @@ function toggleSearchContainer(showContainer, hideContainer) {
 
 // Event listeners for search buttons
 if (searchProfessorsBtn && searchLabsBtn) {
-    searchProfessorsBtn.addEventListener('click', () => {
+    searchProfessorsBtn.addEventListener('click', (event) => {
+        event.stopPropagation(); // Prevent event from bubbling
         toggleSearchContainer(professorsSearchContainer, labsSearchContainer);
     });
 
-    searchLabsBtn.addEventListener('click', () => {
+    searchLabsBtn.addEventListener('click', (event) => {
+        event.stopPropagation(); // Prevent event from bubbling
         toggleSearchContainer(labsSearchContainer, professorsSearchContainer);
     });
 }
@@ -182,10 +180,15 @@ document.addEventListener('click', (event) => {
     }
 });
 
-// Call the initialize function when the page loads
-window.addEventListener('DOMContentLoaded', initializeSearch);
+// Main function to initialize search
+async function initializeSearch() {
+    const professorsData = await fetchJSONData('./doctor_locations.json');
+    const labsData = await fetchJSONData('./labs.json');
 
-// Add this to your Prototype1.js file
+    setupSearch('professors-search', 'professors-search-btn', 'professors-results', professorsData);
+    setupSearch('secondary-search', 'secondary-search-btn', 'secondary-results', professorsData);
+    setupSearch('labs-search', 'labs-search-btn', 'labs-results', labsData);
+}
 
 // Map initialization functions
 let mainCampusMap, secondaryCampusMap;
